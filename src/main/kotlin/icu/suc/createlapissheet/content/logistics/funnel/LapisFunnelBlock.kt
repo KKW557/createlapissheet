@@ -8,7 +8,6 @@ import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.block.state.BlockState
 
 class LapisFunnelBlock(properties: Properties) : FunnelBlock(properties) {
-
     override fun getEquivalentBeltFunnel(
         world: BlockGetter?,
         pos: BlockPos?,

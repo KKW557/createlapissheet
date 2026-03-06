@@ -1,10 +1,7 @@
 package icu.suc.createlapissheet.client.mixin;
 
 import com.zurrtum.create.content.contraptions.actors.seat.SeatEntity;
-import icu.suc.createlapissheet.RecipeSets;
 import icu.suc.createlapissheet.Tags;
-import mezz.jei.common.Internal;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.player.Player;

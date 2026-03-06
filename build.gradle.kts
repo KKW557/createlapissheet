@@ -52,7 +52,7 @@ dependencies {
     modImplementation(libs.fabric.kotlin)
     modImplementation(libs.fabric.api)
     modImplementation(libs.create)
-    modCompileOnly(libs.jei)
+    modImplementation(libs.jei)
     modCompileOnly(libs.rei)
 }
 

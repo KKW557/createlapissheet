@@ -32,6 +32,7 @@ import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockBehaviour
+import net.minecraft.world.level.material.MapColor
 import net.minecraft.world.phys.shapes.VoxelShape
 import org.slf4j.Logger
 import java.util.*
@@ -49,23 +50,22 @@ object Blocks {
     val LAPIS_FUNNEL = register(
         "lapis_funnel",
         ::LapisFunnelBlock,
-        BlockBehaviour.Properties.ofFullCopy(MinecraftBlocks.LAPIS_BLOCK)
+        BlockBehaviour.Properties.ofFullCopy(MinecraftBlocks.LAPIS_BLOCK).mapColor(MapColor.TERRACOTTA_BLUE)
     )
 
     @JvmField
     val LAPIS_BELT_FUNNEL = register(
         "lapis_belt_funnel",
-        { properties ->
-            BeltFunnelBlock(LAPIS_FUNNEL, properties)
-        },
-        BlockBehaviour.Properties.ofFullCopy(MinecraftBlocks.LAPIS_BLOCK)
+        { properties -> BeltFunnelBlock(LAPIS_FUNNEL, properties) },
+        BlockBehaviour.Properties.ofFullCopy(MinecraftBlocks.LAPIS_BLOCK).mapColor(MapColor.TERRACOTTA_BLUE)
     )
 
     @JvmField
     val EVOKER_MANSION = register(
         "evoker_mansion",
         ::EvokerMansionBlock,
-        BlockBehaviour.Properties.ofFullCopy(MinecraftBlocks.LAPIS_BLOCK).lightLevel(EvokerMansionBlock::getLight)
+        BlockBehaviour.Properties.ofFullCopy(MinecraftBlocks.LAPIS_BLOCK).mapColor(MapColor.COLOR_GRAY)
+            .lightLevel(EvokerMansionBlock::getLight)
     )
 
     @JvmField
@@ -408,6 +408,7 @@ object Tags {
 }
 
 object CreativeTabs {
+    @Suppress("unused")
     @JvmField
     val MAIN = register(
         "main", FabricItemGroup.builder()
@@ -550,6 +551,7 @@ object RecipeSets {
 }
 
 object FanProcessingTypes {
+    @Suppress("unused")
     @JvmField
     val WOLOLO = register("wololo", WololoFanProcessingType())
 
@@ -557,11 +559,8 @@ object FanProcessingTypes {
     fun <T : FanProcessingType> register(id: String, type: T) = register(identifier(id), type)
 
     @JvmStatic
-    fun <T : FanProcessingType> register(id: Identifier, type: T) = Registry.register(
-        CreateRegistries.FAN_PROCESSING_TYPE,
-        id,
-        type
-    )
+    fun <T : FanProcessingType> register(id: Identifier, type: T) =
+        Registry.register(CreateRegistries.FAN_PROCESSING_TYPE, id, type)
 
     @JvmStatic
     fun register() {

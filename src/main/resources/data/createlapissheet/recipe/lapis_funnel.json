@@ -2,13 +2,13 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": "#c:plates/lapis",
-    "E": "minecraft:enchanting_table",
+    "B": "#minecraft:bookshelf_books",
+    "L": "#c:plates/lapis",
     "K": "minecraft:dried_kelp"
   },
   "pattern": [
-    "E",
-    "A",
+    "B",
+    "L",
     "K"
   ],
   "result": {

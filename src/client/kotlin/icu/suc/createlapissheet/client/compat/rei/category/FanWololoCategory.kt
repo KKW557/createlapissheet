@@ -105,9 +105,9 @@ class FanWololoCategory : CreateCategory<FanWololoDisplay>() {
         }
     }
 
-    override fun getCategoryIdentifier() = ReiCommon.Companion.FAN_WOLOLO
+    override fun getCategoryIdentifier() = ReiCommon.FAN_WOLOLO
 
-    override fun getTitle() = Component.translatable("${MOD_ID}.recipe.${ReiCommon.Companion.FAN_WOLOLO.path}")
+    override fun getTitle() = Component.translatable("${MOD_ID}.recipe.${ReiCommon.FAN_WOLOLO.path}")
 
     override fun getIcon(): Renderer = TwoIconRenderer(AllItems.PROPELLER, Items.SAFE_EVOKER_MANSION)
 

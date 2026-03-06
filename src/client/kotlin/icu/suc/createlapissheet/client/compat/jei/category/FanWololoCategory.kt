@@ -24,9 +24,9 @@ import org.joml.Matrix3x2f
 import kotlin.math.min
 
 class FanWololoCategory : CreateCategory<RecipeHolder<WololoRecipe>>() {
-    override fun getRecipeType() = JeiModPlugin.Companion.FAN_WOLOLO
+    override fun getRecipeType() = JeiModPlugin.FAN_WOLOLO
 
-    override fun getTitle() = Component.translatable("${MOD_ID}.recipe.${JeiModPlugin.Companion.FAN_WOLOLO.uid.path}")
+    override fun getTitle() = Component.translatable("${MOD_ID}.recipe.${JeiModPlugin.FAN_WOLOLO.uid.path}")
 
     override fun getHeight() = 72
 
@@ -88,8 +88,8 @@ class FanWololoCategory : CreateCategory<RecipeHolder<WololoRecipe>>() {
                 56,
                 4,
                 Blocks.EVOKER_MANSION.defaultBlockState()
-                    .setValue(EvokerMansionBlock.Companion.EVOKER, EvokerMansionBlock.Evoker.CASTING)
-                    .setValue(EvokerMansionBlock.Companion.NAUSEA, recipe.nausea)
+                    .setValue(EvokerMansionBlock.EVOKER, EvokerMansionBlock.Evoker.CASTING)
+                    .setValue(EvokerMansionBlock.NAUSEA, recipe.nausea)
             )
         )
     }

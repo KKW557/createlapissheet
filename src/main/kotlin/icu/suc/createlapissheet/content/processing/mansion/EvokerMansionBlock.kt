@@ -1,13 +1,10 @@
 package icu.suc.createlapissheet.content.processing.mansion
 
-import com.mojang.serialization.MapCodec
 import com.zurrtum.create.foundation.block.IBE
 import icu.suc.createlapissheet.BlockEntityTypes
 import icu.suc.createlapissheet.Items
 import icu.suc.createlapissheet.Shapes
 import icu.suc.createlapissheet.Tags
-import icu.suc.createlapissheet.content.processing.mansion.EvokerMansionBlockEntity
-import icu.suc.createlapissheet.content.processing.mansion.EvokerMansionBlockItem
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.core.component.DataComponents
@@ -29,8 +26,6 @@ import net.minecraft.world.level.Level
 import net.minecraft.world.level.LevelReader
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.HorizontalDirectionalBlock
-import net.minecraft.world.level.block.entity.BlockEntity
-import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.BooleanProperty
@@ -38,7 +33,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty
 import net.minecraft.world.level.pathfinder.PathComputationType
 import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.world.phys.shapes.CollisionContext
-import net.minecraft.world.phys.shapes.VoxelShape
 import kotlin.math.max
 
 class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(properties),
@@ -48,9 +42,9 @@ class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(pr
         registerDefaultState(defaultBlockState().setValue(EVOKER, Evoker.NONE).setValue(NAUSEA, false))
     }
 
-    override fun codec(): MapCodec<out HorizontalDirectionalBlock> = CODEC
+    override fun codec() = CODEC
 
-    override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity? =
+    override fun newBlockEntity(pos: BlockPos, state: BlockState) =
         if (getEvokerOf(state) == Evoker.NONE) null else super.newBlockEntity(pos, state)
 
     override fun getStateForPlacement(context: BlockPlaceContext): BlockState {
@@ -66,12 +60,10 @@ class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(pr
         pos: BlockPos,
         state: BlockState,
         bl: Boolean
-    ): ItemStack {
-        return when (state.getValue(EVOKER)) {
-            Evoker.NONE -> ItemStack(Items.EMPTY_EVOKER_MANSION)
-            Evoker.ANGRY -> ItemStack(Items.EVOKER_MANSION)
-            Evoker.CASTING -> ItemStack(Items.SAFE_EVOKER_MANSION)
-        }
+    ) = when (state.getValue(EVOKER)) {
+        Evoker.NONE -> ItemStack(Items.EMPTY_EVOKER_MANSION)
+        Evoker.ANGRY -> ItemStack(Items.EVOKER_MANSION)
+        Evoker.CASTING -> ItemStack(Items.SAFE_EVOKER_MANSION)
     }
 
     override fun useItemOn(
@@ -145,14 +137,14 @@ class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(pr
         getter: BlockGetter,
         pos: BlockPos,
         context: CollisionContext
-    ): VoxelShape = Shapes.EVOKER_MANSION_BLOCK_SHAPE
+    ) = Shapes.EVOKER_MANSION_BLOCK_SHAPE
 
     override fun getCollisionShape(
         state: BlockState,
         getter: BlockGetter,
         pos: BlockPos,
         context: CollisionContext
-    ): VoxelShape =
+    ) =
         if (context == CollisionContext.empty()) Shapes.EVOKER_MANSION_BLOCK_SPECIAL_COLLISION_SHAPE else Shapes.EVOKER_MANSION_BLOCK_SHAPE
 
     override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
@@ -160,20 +152,20 @@ class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(pr
         builder.add(EVOKER, NAUSEA, FACING)
     }
 
-    override fun hasAnalogOutputSignal(blockState: BlockState): Boolean = true
+    override fun hasAnalogOutputSignal(blockState: BlockState) = true
 
     override fun getAnalogOutputSignal(
         state: BlockState,
         level: Level,
         pos: BlockPos,
         direction: Direction
-    ): Int = max(0, getEvokerOf(state).ordinal - 1);
+    ) = max(0, getEvokerOf(state).ordinal - 1)
 
-    override fun isPathfindable(blockState: BlockState, pathComputationType: PathComputationType): Boolean = false
+    override fun isPathfindable(blockState: BlockState, pathComputationType: PathComputationType) = false
 
-    override fun getBlockEntityClass(): Class<EvokerMansionBlockEntity> = EvokerMansionBlockEntity::class.java
+    override fun getBlockEntityClass() = EvokerMansionBlockEntity::class.java
 
-    override fun getBlockEntityType(): BlockEntityType<out EvokerMansionBlockEntity> = BlockEntityTypes.EVOKER
+    override fun getBlockEntityType() = BlockEntityTypes.EVOKER
 
     companion object {
         @JvmField
@@ -217,9 +209,11 @@ class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(pr
         CASTING("casting");
 
         companion object {
+            @Suppress("unused")
             @JvmField
             val CODEC = StringRepresentable.fromEnum { entries.toTypedArray() }
 
+            @Suppress("unused")
             @JvmStatic
             fun byIndex(index: Int) = Evoker.entries[index]
         }

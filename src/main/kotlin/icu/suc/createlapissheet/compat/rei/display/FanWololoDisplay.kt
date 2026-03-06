@@ -34,7 +34,7 @@ class FanWololoDisplay(
 
     override fun getOutputEntries() = outputs.map { EntryIngredients.of(it.create()) }
 
-    override fun getCategoryIdentifier() = ReiCommon.Companion.FAN_WOLOLO
+    override fun getCategoryIdentifier() = ReiCommon.FAN_WOLOLO
 
     override fun getDisplayLocation() = location
 

@@ -34,13 +34,13 @@ class EvokerMansionBlockEntity(pos: BlockPos, state: BlockState) :
         level?.let {
             if (!it.isClientSide) return
 
-            Handle.Companion.INSTANCE.tickEvokerMansionAnimation(this)
+            Handle.INSTANCE.tickEvokerMansionAnimation(this)
         }
     }
 
     override fun addBehaviours(behaviours: List<BlockEntityBehaviour<*>?>?) {}
 
-    fun getEvokerFromBlock() = EvokerMansionBlock.Companion.getEvokerOf(blockState)
+    fun getEvokerFromBlock() = EvokerMansionBlock.getEvokerOf(blockState)
 
-    fun getNauseaFromBlock() = EvokerMansionBlock.Companion.getNauseaOf(blockState)
+    fun getNauseaFromBlock() = EvokerMansionBlock.getNauseaOf(blockState)
 }
