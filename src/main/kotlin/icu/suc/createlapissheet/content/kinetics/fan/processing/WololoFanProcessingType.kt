@@ -49,11 +49,10 @@ class WololoFanProcessingType : FanProcessingType {
 
     override fun getPriority() = 557
 
-    override fun canProcess(stack: ItemStack, level: Level): Boolean =
-        (level as ServerLevel).recipeAccess()
-            .getRecipeFor(RecipeTypes.WOLOLO, SingleRecipeInput(stack), level)
-            .map { it.value().nausea == nausea }
-            .orElse(false) ?: false
+    override fun canProcess(stack: ItemStack, level: Level) = (level as ServerLevel).recipeAccess()
+        .getRecipeFor(RecipeTypes.WOLOLO, SingleRecipeInput(stack), level)
+        .map { it.value().nausea == nausea }
+        .orElse(false) ?: false
 
     override fun process(
         stack: ItemStack,
