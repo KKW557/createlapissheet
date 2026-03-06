@@ -17,7 +17,7 @@ import icu.suc.createlapissheet.content.logistics.funnel.LapisFunnelBlock
 import icu.suc.createlapissheet.content.processing.mansion.EvokerMansionBlock
 import icu.suc.createlapissheet.content.processing.mansion.EvokerMansionBlockEntity
 import icu.suc.createlapissheet.content.processing.mansion.EvokerMansionBlockItem
-import icu.suc.createlapissheet.item.crafting.WololoRecipe
+import icu.suc.createlapissheet.content.kinetics.fan.processing.WololoRecipe
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup
 import net.minecraft.core.Registry
 import net.minecraft.core.registries.BuiltInRegistries

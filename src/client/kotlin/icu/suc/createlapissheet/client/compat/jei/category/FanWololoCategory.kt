@@ -11,7 +11,7 @@ import icu.suc.createlapissheet.MOD_ID
 import icu.suc.createlapissheet.RecipeTypes
 import icu.suc.createlapissheet.client.compat.JeiModPlugin
 import icu.suc.createlapissheet.content.processing.mansion.EvokerMansionBlock
-import icu.suc.createlapissheet.item.crafting.WololoRecipe
+import icu.suc.createlapissheet.content.kinetics.fan.processing.WololoRecipe
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView
 import mezz.jei.api.recipe.IFocusGroup

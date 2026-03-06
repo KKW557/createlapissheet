@@ -2,7 +2,7 @@ package icu.suc.createlapissheet.compat
 
 import icu.suc.createlapissheet.MOD_ID
 import icu.suc.createlapissheet.compat.rei.display.FanWololoDisplay
-import icu.suc.createlapissheet.item.crafting.WololoRecipe
+import icu.suc.createlapissheet.content.kinetics.fan.processing.WololoRecipe
 import me.shedaniel.rei.api.common.category.CategoryIdentifier
 import me.shedaniel.rei.api.common.display.Display
 import me.shedaniel.rei.api.common.display.DisplaySerializerRegistry

@@ -1,4 +1,4 @@
-package icu.suc.createlapissheet.item.crafting;
+package icu.suc.createlapissheet.content.kinetics.fan.processing;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;

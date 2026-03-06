@@ -6,7 +6,6 @@ import com.zurrtum.create.foundation.recipe.RecipeApplier
 import icu.suc.createlapissheet.RecipeTypes
 import icu.suc.createlapissheet.Tags
 import icu.suc.createlapissheet.content.processing.mansion.EvokerMansionBlock
-import icu.suc.createlapissheet.item.crafting.WololoRecipe
 import net.minecraft.core.BlockPos
 import net.minecraft.core.particles.ColorParticleOption
 import net.minecraft.core.particles.ParticleTypes

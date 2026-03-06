@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import com.zurrtum.create.content.processing.recipe.ProcessingOutput
 import icu.suc.createlapissheet.compat.ReiCommon
-import icu.suc.createlapissheet.item.crafting.WololoRecipe
+import icu.suc.createlapissheet.content.kinetics.fan.processing.WololoRecipe
 import me.shedaniel.rei.api.common.display.Display
 import me.shedaniel.rei.api.common.display.DisplaySerializer
 import me.shedaniel.rei.api.common.entry.EntryIngredient

@@ -6,7 +6,7 @@ import com.zurrtum.create.client.compat.jei.display.MysteriousItemConversionDisp
 import icu.suc.createlapissheet.Items
 import icu.suc.createlapissheet.client.compat.jei.category.FanWololoCategory
 import icu.suc.createlapissheet.identifier
-import icu.suc.createlapissheet.item.crafting.WololoRecipe
+import icu.suc.createlapissheet.content.kinetics.fan.processing.WololoRecipe
 import mezz.jei.api.IModPlugin
 import mezz.jei.api.JeiPlugin
 import mezz.jei.api.recipe.types.IRecipeType
