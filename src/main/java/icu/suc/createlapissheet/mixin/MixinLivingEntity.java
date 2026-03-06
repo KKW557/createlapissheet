@@ -29,7 +29,7 @@ public abstract class MixinLivingEntity {
         var pos = seat.blockPosition();
         var state = level.getBlockState(pos);
 
-        if (!state.is(Tags.SEATS_OF_UNDYING)) return;
+        if (!state.is(Tags.Block.SEATS_OF_UNDYING)) return;
 
         // for compat, idk reealllly usefuulll??
         var itemStack = state.getBlock().asItem().getDefaultInstance();

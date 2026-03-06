@@ -53,7 +53,7 @@ dependencies {
     modImplementation(libs.fabric.api)
     modImplementation(libs.create)
     modCompileOnly(libs.jei)
-    modImplementation(libs.rei)
+    modCompileOnly(libs.rei)
 }
 
 tasks.processResources {

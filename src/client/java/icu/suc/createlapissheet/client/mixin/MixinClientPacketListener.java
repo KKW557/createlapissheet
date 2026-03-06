@@ -1,7 +1,10 @@
 package icu.suc.createlapissheet.client.mixin;
 
 import com.zurrtum.create.content.contraptions.actors.seat.SeatEntity;
+import icu.suc.createlapissheet.RecipeSets;
 import icu.suc.createlapissheet.Tags;
+import mezz.jei.common.Internal;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.player.Player;
@@ -24,7 +27,7 @@ public abstract class MixinClientPacketListener {
         var pos = seat.blockPosition();
         var state = level.getBlockState(pos);
 
-        if (!state.is(Tags.SEATS_OF_UNDYING)) return;
+        if (!state.is(Tags.Block.SEATS_OF_UNDYING)) return;
 
         var itemStack = state.getBlock().asItem().getDefaultInstance();
         itemStack.set(DataComponents.DEATH_PROTECTION, DeathProtection.TOTEM_OF_UNDYING);

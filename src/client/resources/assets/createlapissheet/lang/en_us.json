@@ -22,5 +22,6 @@
   "item.createlapissheet.lapis_sheet": "Lapis Sheet",
   "item.createlapissheet.safe_evoker_mansion": "Safe Evoker Mansion",
   "item.createlapissheet.empty_evoker_mansion": "Empty Evoker Mansion",
-  "itemGroup.createlapissheet": "Create: Lapis Sheet"
+  "itemGroup.createlapissheet": "Create: Lapis Sheet",
+  "createlapissheet.recipe.wololo": "Wololo"
 }

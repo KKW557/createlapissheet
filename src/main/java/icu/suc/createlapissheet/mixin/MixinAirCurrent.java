@@ -16,7 +16,7 @@ public abstract class MixinAirCurrent {
     @Inject(method = "shouldAlwaysPass", at = @At("RETURN"), cancellable = true)
     private static void injectShouldAlwaysPass(BlockState state, @NonNull CallbackInfoReturnable<Boolean> cir) {
         if (!cir.getReturnValue()) return;
-        if (!state.is(Tags.FAN_TRANSPARENT_REQUIRES_UNPOWERED)) return;
+        if (!state.is(Tags.Block.FAN_TRANSPARENT_REQUIRES_UNPOWERED)) return;
         if (state.hasProperty(BlockStateProperties.POWERED) && state.getValue(BlockStateProperties.POWERED)) cir.setReturnValue(false);
     }
 }

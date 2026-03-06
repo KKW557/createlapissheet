@@ -98,13 +98,13 @@ class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(pr
                     }
 
                     is RemoveStatusEffectsConsumeEffect -> {
-                        if (!effect.effects.any { it.`is`(Tags.NAUSEA) }) continue
+                        if (!effect.effects.any { it.`is`(Tags.MobEffect.NAUSEA) }) continue
                         flagged = true
                         nausea = false
                     }
 
                     is ApplyStatusEffectsConsumeEffect -> {
-                        if (!effect.effects.any { it.effect.`is`(Tags.NAUSEA) }) continue
+                        if (!effect.effects.any { it.effect.`is`(Tags.MobEffect.NAUSEA) }) continue
                         flagged = true
                         nausea = true
                     }

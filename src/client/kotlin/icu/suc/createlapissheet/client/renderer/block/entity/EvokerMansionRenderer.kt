@@ -129,14 +129,14 @@ class EvokerMansionRenderer :
         }
 
         override fun render(pose: PoseStack.Pose, vertexConsumer: VertexConsumer) {
-            evoker
-                ?.translate(0.5, 0.0, 0.5)
-                ?.scale(0.85f)
-                ?.translate(-0.5, 0.0, -0.5)
-                ?.translate(headX.toDouble(), headY.toDouble(), headZ.toDouble())
-                ?.rotateCentered(horizontalAngle, Direction.UP)
-                ?.light<SuperByteBuffer>(LightTexture.FULL_BRIGHT)
-                ?.renderInto(pose, vertexConsumer)
+            evoker!!
+                .translate(0.5, 0.0, 0.5)
+                .scale(0.85f)
+                .translate(-0.5, 0.0, -0.5)
+                .translate(headX.toDouble(), headY.toDouble(), headZ.toDouble())
+                .rotateCentered(horizontalAngle, Direction.UP)
+                .light<SuperByteBuffer>(LightTexture.FULL_BRIGHT)
+                .renderInto(pose, vertexConsumer)
         }
     }
 }

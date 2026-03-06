@@ -5,12 +5,15 @@ package icu.suc.createlapissheet
 import com.mojang.logging.LogUtils
 import com.zurrtum.create.AllBlockEntityTypes
 import com.zurrtum.create.AllBlocks
+import com.zurrtum.create.AllRecipeSets
 import com.zurrtum.create.AllShapes
 import com.zurrtum.create.api.registry.CreateRegistries
+import com.zurrtum.create.catnip.theme.Color
 import com.zurrtum.create.content.contraptions.actors.seat.SeatBlock
 import com.zurrtum.create.content.kinetics.fan.processing.FanProcessingType
 import com.zurrtum.create.content.logistics.funnel.BeltFunnelBlock
 import com.zurrtum.create.content.logistics.funnel.FunnelItem
+import com.zurrtum.create.foundation.recipe.RecipeApplier
 import icu.suc.createlapissheet.block.EvokerMansionBlock
 import icu.suc.createlapissheet.block.LapisFunnelBlock
 import icu.suc.createlapissheet.block.entity.EvokerMansionBlockEntity
@@ -19,18 +22,23 @@ import icu.suc.createlapissheet.item.crafting.WololoRecipe
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Registry
+import net.minecraft.core.particles.ColorParticleOption
+import net.minecraft.core.particles.ParticleTypes
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.Identifier
 import net.minecraft.resources.ResourceKey
+import net.minecraft.server.level.ServerLevel
 import net.minecraft.tags.TagKey
 import net.minecraft.util.RandomSource
+import net.minecraft.world.effect.MobEffectInstance
+import net.minecraft.world.effect.MobEffects
 import net.minecraft.world.entity.Entity
+import net.minecraft.world.entity.LivingEntity
+import net.minecraft.world.entity.monster.illager.SpellcasterIllager
 import net.minecraft.world.item.*
-import net.minecraft.world.item.crafting.Recipe
-import net.minecraft.world.item.crafting.RecipeSerializer
-import net.minecraft.world.item.crafting.RecipeType
+import net.minecraft.world.item.crafting.*
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.entity.BlockEntity
@@ -39,6 +47,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.phys.Vec3
 import net.minecraft.world.phys.shapes.VoxelShape
 import org.slf4j.Logger
+import java.util.*
+import java.util.function.Function
 
 typealias MinecraftBlocks = net.minecraft.world.level.block.Blocks
 
@@ -285,6 +295,7 @@ object Items {
         function: (T, Item.Properties) -> U
     ) = register(block, function, Item.Properties())
 
+    @Suppress("DEPRECATION")
     @JvmStatic
     fun <T : Block, U : Item> register(
         block: T,
@@ -330,28 +341,82 @@ object Items {
     }
 }
 
-object BlockEntityTypes {
-    @JvmField
-    val EVOKER = register("evoker", ::EvokerMansionBlockEntity, Blocks.EVOKER_MANSION)
+object Tags {
+    object Block {
+        @JvmField
+        val FAN_TRANSPARENT_REQUIRES_UNPOWERED = block("fan_transparent_requires_unpowered")
+
+        @JvmField
+        val SEATS_OF_UNDYING = block("seats_of_undying")
+
+        @JvmField
+        val FAN_PROCESSING_CATALYSTS_WOLOLO = block("fan_processing_catalysts/wololo")
+
+        @JvmStatic
+        fun block(id: String) = block(identifier(id))
+
+        @JvmStatic
+        fun block(id: Identifier) = register(Registries.BLOCK, id)
+
+        @JvmStatic
+        fun register() {
+        }
+    }
+
+    object Fluid {
+        @JvmField
+        val FAN_PROCESSING_CATALYSTS_WOLOLO = fluid("fan_processing_catalysts/wololo")
+
+        @JvmStatic
+        fun fluid(id: String) = fluid(identifier(id))
+
+        @JvmStatic
+        fun fluid(id: Identifier) = register(Registries.FLUID, id)
+
+        @JvmStatic
+        fun register() {
+        }
+    }
+
+    object EntityType {
+        @JvmField
+        val EVOKER_MANSION_CAPTURABLE = entityType("evoker_mansion_capturable")
+
+        @JvmStatic
+        fun entityType(id: String) = entityType(identifier(id))
+
+        @JvmStatic
+        fun entityType(id: Identifier) = register(Registries.ENTITY_TYPE, id)
+
+        @JvmStatic
+        fun register() {
+        }
+    }
+
+    object MobEffect {
+        @JvmField
+        val NAUSEA = mobEffect("nausea")
+
+        @JvmStatic
+        fun mobEffect(id: String) = mobEffect(identifier(id))
+
+        @JvmStatic
+        fun mobEffect(id: Identifier) = register(Registries.MOB_EFFECT, id)
+
+        @JvmStatic
+        fun register() {
+        }
+    }
 
     @JvmStatic
-    fun <T : BlockEntity> register(
-        id: String,
-        function: BlockEntityType.BlockEntitySupplier<T>,
-        vararg blocks: Block
-    ) = register(Identifier.fromNamespaceAndPath(id, id), function, *blocks)
-
-    @JvmStatic
-    fun <T : BlockEntity> register(
-        id: Identifier,
-        function: BlockEntityType.BlockEntitySupplier<T>,
-        vararg blocks: Block
-    ) = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, id, BlockEntityType(function, blocks.toSet()))
+    fun <T : Any> register(registry: ResourceKey<out Registry<T>>, id: Identifier) = TagKey.create(registry, id)
 
     @JvmStatic
     fun register() {
-        AllBlockEntityTypes.FUNNEL.addSupportedBlock(Blocks.LAPIS_FUNNEL)
-        AllBlockEntityTypes.FUNNEL.addSupportedBlock(Blocks.LAPIS_BELT_FUNNEL)
+        Tags.Block.register()
+        EntityType.register()
+        MobEffect.register()
+        Fluid.register()
     }
 }
 
@@ -404,42 +469,28 @@ object CreativeTabs {
     }
 }
 
-object Tags {
+object BlockEntityTypes {
     @JvmField
-    val FAN_TRANSPARENT_REQUIRES_UNPOWERED = block("fan_transparent_requires_unpowered")
-
-    @JvmField
-    val SEATS_OF_UNDYING = block("seats_of_undying")
-
-    @JvmField
-    val EVOKER_MANSION_CAPTURABLE = entityType("evoker_mansion_capturable")
-
-    @JvmField
-    val NAUSEA = mobEffect("Mob Enausea")
+    val EVOKER = register("evoker", ::EvokerMansionBlockEntity, Blocks.EVOKER_MANSION)
 
     @JvmStatic
-    fun block(id: String) = block(identifier(id))
+    fun <T : BlockEntity> register(
+        id: String,
+        function: BlockEntityType.BlockEntitySupplier<T>,
+        vararg blocks: Block
+    ) = register(Identifier.fromNamespaceAndPath(id, id), function, *blocks)
 
     @JvmStatic
-    fun block(id: Identifier) = register(Registries.BLOCK, id)
-
-    @JvmStatic
-    fun entityType(id: String) = entityType(identifier(id))
-
-    @JvmStatic
-    fun entityType(id: Identifier) = register(Registries.ENTITY_TYPE, id)
-
-    @JvmStatic
-    fun mobEffect(id: String) = mobEffect(identifier(id))
-
-    @JvmStatic
-    fun mobEffect(id: Identifier) = register(Registries.MOB_EFFECT, id)
-
-    @JvmStatic
-    fun <T : Any> register(registry: ResourceKey<out Registry<T>>, id: Identifier) = TagKey.create(registry, id)
+    fun <T : BlockEntity> register(
+        id: Identifier,
+        function: BlockEntityType.BlockEntitySupplier<T>,
+        vararg blocks: Block
+    ) = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, id, BlockEntityType(function, blocks.toSet()))
 
     @JvmStatic
     fun register() {
+        AllBlockEntityTypes.FUNNEL.addSupportedBlock(Blocks.LAPIS_FUNNEL)
+        AllBlockEntityTypes.FUNNEL.addSupportedBlock(Blocks.LAPIS_BELT_FUNNEL)
     }
 }
 
@@ -480,52 +531,125 @@ object RecipeSerializers {
     }
 }
 
+object RecipeSets {
+    @JvmField
+    val WOLOLO = register("wololo")
+
+    @JvmStatic
+    fun register(id: String) = register(identifier(id))
+
+    @JvmStatic
+    fun register(id: Identifier) = ResourceKey.create(RecipePropertySet.TYPE_KEY, id)
+
+    @Suppress("UNCHECKED_CAST")
+    private fun <T : Recipe<*>> register(
+        key: ResourceKey<RecipePropertySet>,
+        type: Class<T>,
+        getter: Function<T, Ingredient>
+    ) {
+        AllRecipeSets.ALL[key] = RecipeManager.IngredientExtractor { recipe: Recipe<*> ->
+            if (type.isInstance(recipe)) {
+                return@IngredientExtractor Optional.of<Ingredient>(getter.apply(recipe as T))
+            } else {
+                return@IngredientExtractor Optional.empty<Ingredient>()
+            }
+        }
+    }
+
+    @JvmStatic
+    fun register() {
+        register(WOLOLO, WololoRecipe::class.java, WololoRecipe::ingredient)
+    }
+}
+
 object FanProcessingTypes {
     @JvmField
     val WOLOLO = register("wololo", object : FanProcessingType {
-        override fun isValidAt(
-            level: Level?,
-            pos: BlockPos?
-        ): Boolean {
-            TODO("Not yet implemented")
+        var nausea = false
+
+        override fun isValidAt(level: Level, pos: BlockPos): Boolean {
+            level.getFluidState(pos).let {
+                if (it.`is`(Tags.Fluid.FAN_PROCESSING_CATALYSTS_WOLOLO)) {
+                    nausea = it.getValue(EvokerMansionBlock.NAUSEA)
+                    return true
+                }
+            }
+            level.getBlockState(pos).let {
+                if (it.`is`(Tags.Block.FAN_PROCESSING_CATALYSTS_WOLOLO)) {
+                    if (EvokerMansionBlock.getEvokerOf(it) == EvokerMansionBlock.Evoker.CASTING) {
+                        nausea = EvokerMansionBlock.getNauseaOf(it)
+                        return true
+                    }
+                }
+            }
+            return false
         }
 
-        override fun getPriority(): Int {
-            TODO("Not yet implemented")
-        }
+        override fun getPriority() = 557
 
-        override fun canProcess(
-            stack: ItemStack?,
-            level: Level?
-        ): Boolean {
-            TODO("Not yet implemented")
-        }
+        override fun canProcess(stack: ItemStack, level: Level) = (level as ServerLevel)
+            .recipeAccess()
+            .getRecipeFor(RecipeTypes.WOLOLO, SingleRecipeInput(stack), level)
+            .map { it.value().nausea == nausea }
+            .orElse(false)
 
         override fun process(
-            stack: ItemStack?,
-            level: Level?
-        ): List<ItemStack?>? {
-            TODO("Not yet implemented")
+            stack: ItemStack,
+            level: Level
+        ): List<ItemStack>? {
+            val input = SingleRecipeInput(stack)
+            val recipe: Optional<RecipeHolder<WololoRecipe>> = (level as ServerLevel).recipeAccess()
+                .getRecipeFor<SingleRecipeInput, WololoRecipe>(RecipeTypes.WOLOLO, input, level)
+            return recipe.map(Function { entry: RecipeHolder<WololoRecipe> ->
+                RecipeApplier.applyRecipeOn(
+                    level.getRandom(),
+                    stack.count,
+                    input,
+                    entry.value()
+                )
+            }).orElse(null)
         }
 
         override fun spawnProcessingParticles(
-            level: Level?,
-            pos: Vec3?
+            level: Level,
+            pos: Vec3
         ) {
-            TODO("Not yet implemented")
+            if (level.random.nextInt(8) != 0) return
+
+            val color = SpellcasterIllager.IllagerSpell.WOLOLO.spellColor
+            level.addParticle(
+                ColorParticleOption.create(
+                    ParticleTypes.ENTITY_EFFECT,
+                    color[0].toFloat(),
+                    color[1].toFloat(),
+                    color[2].toFloat()
+                ),
+                pos.x + (level.random.nextFloat() - .5f) * .5f,
+                pos.y + .5f,
+                pos.z + (level.random.nextFloat() - .5f) * .5f,
+                0.0,
+                0.0,
+                0.0
+            )
         }
 
         override fun morphAirFlow(
-            particleAccess: FanProcessingType.AirFlowParticleAccess?,
-            random: RandomSource?
+            particleAccess: FanProcessingType.AirFlowParticleAccess,
+            random: RandomSource
         ) {
-            TODO("Not yet implemented")
+            val float = random.nextFloat()
+            particleAccess.setColor(
+                if (nausea) Color.mixColors(DyeColor.BLUE.fireworkColor, DyeColor.BLUE.textureDiffuseColor, float)
+                else Color.mixColors(DyeColor.RED.fireworkColor, DyeColor.RED.textureDiffuseColor, float)
+            )
+            particleAccess.setAlpha(.8f)
         }
 
         override fun affectEntity(entity: Entity?, level: Level?) {
-            TODO("Not yet implemented")
+            if (!nausea) return
+            if (entity !is LivingEntity) return
+            entity.addEffect(MobEffectInstance(MobEffects.NAUSEA, 80, 0, false, false))
         }
-
     })
 
     @JvmStatic

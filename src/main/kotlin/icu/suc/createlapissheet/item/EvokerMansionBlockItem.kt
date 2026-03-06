@@ -60,7 +60,7 @@ class EvokerMansionBlockItem(block: Block, properties: Properties, val evoker: E
                         val readView = TagValueInput.create(logging, level.registryAccess(), data.entityToSpawn())
 
                         val entityType = EntityType.by(readView).orElse(null) ?: continue
-                        if (!entityType.`is`(Tags.EVOKER_MANSION_CAPTURABLE)) continue
+                        if (!entityType.`is`(Tags.EntityType.EVOKER_MANSION_CAPTURABLE)) continue
 
                         spawnCaptureEffects(level, VecHelper.getCenterOf(pos))
                         if (level.isClientSide || player == null) return@use InteractionResult.SUCCESS
@@ -98,7 +98,7 @@ class EvokerMansionBlockItem(block: Block, properties: Properties, val evoker: E
     ): InteractionResult {
         if (!isEmpty()) return super.interactLivingEntity(held, player, entity, hand)
 
-        if (!entity.type.`is`(Tags.EVOKER_MANSION_CAPTURABLE)) return super.interactLivingEntity(held, player, entity, hand)
+        if (!entity.type.`is`(Tags.EntityType.EVOKER_MANSION_CAPTURABLE)) return super.interactLivingEntity(held, player, entity, hand)
 
         val level = player.level()
         spawnCaptureEffects(level, entity.position())
