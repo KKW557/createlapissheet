@@ -1,0 +1,18 @@
+{
+  "type": "create:mechanical_crafting",
+  "key": {
+    "L": "#c:plates/lapis",
+    "R": "#c:dusts/redstone",
+    "Q": "create:polished_rose_quartz",
+    "C": "#c:nuggets/gold"
+  },
+  "pattern": [
+    "  L  ",
+    "RRQRR",
+    " CCC "
+  ],
+  "result": {
+    "count": 1,
+    "id": "createlapissheet:integrated_circuit"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "parent": "create:block/belt_funnel/block_pushing",
+  "textures": {
+    "base": "createlapissheet:block/funnel/lapis_funnel_open",
+    "block": "minecraft:block/lapis_block",
+    "direction": "createlapissheet:block/funnel/lapis_funnel_push",
+    "particle": "minecraft:block/lapis_block",
+    "redstone": "createlapissheet:block/funnel/lapis_funnel_unpowered"
+  }
+}

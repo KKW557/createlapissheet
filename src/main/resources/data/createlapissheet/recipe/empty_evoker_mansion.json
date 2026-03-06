@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "createlapissheet:red_seat_of_undying",
+    "I": "#c:plates/lapis"
+  },
+  "pattern": [
+    " I ",
+    "IAI",
+    " I "
+  ],
+  "result": {
+    "count": 1,
+    "id": "createlapissheet:empty_evoker_mansion"
+  }
+}

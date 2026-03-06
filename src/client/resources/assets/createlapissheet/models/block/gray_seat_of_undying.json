@@ -1,0 +1,7 @@
+{
+  "parent": "create:block/gray_seat",
+  "textures": {
+    "0": "createlapissheet:block/seat_of_undying/bottom",
+    "2": "createlapissheet:block/seat_of_undying/side_gray"
+  }
+}

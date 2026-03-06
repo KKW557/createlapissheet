@@ -1,0 +1,10 @@
+{
+  "type": "createlapissheet:wololo",
+  "nausea": true,
+  "ingredient": "minecraft:redstone_block",
+  "results": [
+    {
+      "id": "minecraft:lapis_block"
+    }
+  ]
+}

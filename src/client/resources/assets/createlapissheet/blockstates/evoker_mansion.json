@@ -1,0 +1,40 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "evoker": "none|angry",
+        "nausea": "false"
+      },
+      "apply": {
+        "model": "createlapissheet:block/evoker_mansion/red"
+      }
+    },
+    {
+      "when": {
+        "evoker": "none|angry",
+        "nausea": "true"
+      },
+      "apply": {
+        "model": "createlapissheet:block/evoker_mansion/blue"
+      }
+    },
+    {
+      "when": {
+        "evoker": "casting",
+        "nausea": "false"
+      },
+      "apply": {
+        "model": "createlapissheet:block/evoker_mansion/bannered/red"
+      }
+    },
+    {
+      "when": {
+        "evoker": "casting",
+        "nausea": "true"
+      },
+      "apply": {
+        "model": "createlapissheet:block/evoker_mansion/bannered/blue"
+      }
+    }
+  ]
+}

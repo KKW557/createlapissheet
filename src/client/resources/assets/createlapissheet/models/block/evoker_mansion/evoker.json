@@ -1,0 +1,39 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "createlapissheet:block/evoker_mansion/evoker",
+		"particle": "createlapissheet:block/evoker_mansion/evoker"
+	},
+	"elements": [
+		{
+			"name": "Head",
+			"from": [4, 5, 4],
+			"to": [12, 15, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [6, 6, 6]},
+			"faces": {
+				"north": {"uv": [4, 4, 8, 9], "texture": "#0"},
+				"east": {"uv": [0, 4, 4, 9], "texture": "#0"},
+				"south": {"uv": [12, 4, 16, 9], "texture": "#0"},
+				"west": {"uv": [8, 4, 12, 9], "texture": "#0"},
+				"up": {"uv": [4, 0, 8, 4], "texture": "#0"},
+				"down": {"uv": [8, 0, 12, 4], "texture": "#0"}
+			}
+		},
+		{
+			"name": "Nose",
+			"from": [7, 4, 2],
+			"to": [9, 8, 4],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 4, 2]},
+			"faces": {
+				"north": {"uv": [13, 1, 14, 3], "texture": "#0"},
+				"east": {"uv": [12, 1, 13, 3], "texture": "#0"},
+				"south": {"uv": [15, 1, 16, 3], "texture": "#0"},
+				"west": {"uv": [14, 1, 15, 3], "texture": "#0"},
+				"up": {"uv": [13, 0, 14, 1], "texture": "#0"},
+				"down": {"uv": [14, 0, 15, 1], "texture": "#0"}
+			}
+		}
+	]
+}

@@ -1,0 +1,20 @@
+{
+  "parent": "block/block",
+  "loader": "neoforge:obj",
+  "flip_v": true,
+  "model": "createlapissheet:models/block/evoker_mansion/mansion.obj",
+  "textures": {
+    "0": "createlapissheet:block/evoker_mansion/bannered/blue",
+    "particle": "minecraft:block/lapis_block"
+  },
+  "display": {
+    "gui": {
+      "rotation": [30, 225, 0],
+      "scale": [0.7, 0.7, 0.7]
+    },
+    "fixed": {
+      "rotation": [0, 0, 0],
+      "scale": [0.5, 0.5, 0.5]
+    }
+  }
+}

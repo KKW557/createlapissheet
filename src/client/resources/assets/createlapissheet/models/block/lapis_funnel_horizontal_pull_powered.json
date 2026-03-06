@@ -1,0 +1,10 @@
+{
+  "parent": "create:block/funnel/block_horizontal",
+  "textures": {
+    "base": "createlapissheet:block/funnel/lapis_funnel_closed",
+    "block": "minecraft:block/lapis_block",
+    "direction": "createlapissheet:block/funnel/lapis_funnel_pull",
+    "particle": "minecraft:block/lapis_block",
+    "redstone": "createlapissheet:block/funnel/lapis_funnel_powered"
+  }
+}

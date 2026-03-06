@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "#c:plates/lapis",
+    "E": "minecraft:enchanting_table",
+    "K": "minecraft:dried_kelp"
+  },
+  "pattern": [
+    "E",
+    "A",
+    "K"
+  ],
+  "result": {
+    "count": 2,
+    "id": "createlapissheet:lapis_funnel"
+  }
+}
