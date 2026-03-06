@@ -19,5 +19,6 @@
   "block.createlapissheet.yellow_seat_of_undying": "黃色不死坐墊",
   "item.createlapissheet.integrated_circuit": "IC板",
   "item.createlapissheet.lapis_sheet": "青金石板",
-  "itemGroup.createlapissheet": "机械动力：青金石板"
+  "itemGroup.createlapissheet": "机械动力：青金石板",
+  "createlapissheet.recipe.fan_wololo": "批次嗚嚕嚕"
 }

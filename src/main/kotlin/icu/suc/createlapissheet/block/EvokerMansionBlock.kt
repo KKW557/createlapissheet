@@ -1,6 +1,5 @@
 package icu.suc.createlapissheet.block
 
-import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.zurrtum.create.foundation.block.IBE
 import icu.suc.createlapissheet.BlockEntityTypes
@@ -18,7 +17,6 @@ import net.minecraft.sounds.SoundSource
 import net.minecraft.util.StringRepresentable
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
-import net.minecraft.world.effect.MobEffects
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.entity.raid.Raid
 import net.minecraft.world.item.ItemStack
