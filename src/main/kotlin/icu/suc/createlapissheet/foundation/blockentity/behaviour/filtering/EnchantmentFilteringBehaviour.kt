@@ -1,4 +1,4 @@
-package icu.suc.createlapissheet.block.entity.behaviour.filtering
+package icu.suc.createlapissheet.foundation.blockentity.behaviour.filtering
 
 import com.zurrtum.create.content.logistics.filter.AttributeFilterItem
 import com.zurrtum.create.foundation.blockEntity.SmartBlockEntity

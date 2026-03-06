@@ -1,11 +1,9 @@
-package icu.suc.createlapissheet.item
+package icu.suc.createlapissheet.content.processing.mansion
 
 import com.zurrtum.create.catnip.math.VecHelper
 import icu.suc.createlapissheet.Blocks
 import icu.suc.createlapissheet.Items
-import icu.suc.createlapissheet.LOGGER
 import icu.suc.createlapissheet.Tags
-import icu.suc.createlapissheet.block.EvokerMansionBlock
 import net.minecraft.core.BlockPos
 import net.minecraft.core.particles.ParticleTypes
 import net.minecraft.sounds.SoundEvents
@@ -55,7 +53,7 @@ class EvokerMansionBlockItem(block: Block, properties: Properties, val evoker: E
                     spawner.nextSpawnData?.let { list.add(it) }
                 }
 
-                ProblemReporter.ScopedCollector(be.problemPath(), LOGGER).use { logging ->
+                ProblemReporter.ScopedCollector(be.problemPath(), icu.suc.createlapissheet.LOGGER).use { logging ->
                     for (data in list) {
                         val readView = TagValueInput.create(logging, level.registryAccess(), data.entityToSpawn())
 

@@ -1,4 +1,4 @@
-package icu.suc.createlapissheet.client.compat.rei
+package icu.suc.createlapissheet.client.compat.rei.category
 
 import com.zurrtum.create.AllItems
 import com.zurrtum.create.client.compat.rei.CreateCategory
@@ -8,9 +8,9 @@ import com.zurrtum.create.client.foundation.gui.render.FanRenderState
 import icu.suc.createlapissheet.Blocks
 import icu.suc.createlapissheet.Items
 import icu.suc.createlapissheet.MOD_ID
-import icu.suc.createlapissheet.block.EvokerMansionBlock
 import icu.suc.createlapissheet.compat.ReiCommon
-import icu.suc.createlapissheet.compat.rei.FanWololoDisplay
+import icu.suc.createlapissheet.compat.rei.display.FanWololoDisplay
+import icu.suc.createlapissheet.content.processing.mansion.EvokerMansionBlock
 import me.shedaniel.math.Point
 import me.shedaniel.math.Rectangle
 import me.shedaniel.rei.api.client.gui.Renderer
@@ -20,6 +20,7 @@ import me.shedaniel.rei.api.common.entry.EntryIngredient
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.network.chat.Component
 import org.joml.Matrix3x2f
+import kotlin.collections.plusAssign
 import kotlin.math.min
 
 class FanWololoCategory : CreateCategory<FanWololoDisplay>() {
@@ -104,9 +105,9 @@ class FanWololoCategory : CreateCategory<FanWololoDisplay>() {
         }
     }
 
-    override fun getCategoryIdentifier() = ReiCommon.FAN_WOLOLO
+    override fun getCategoryIdentifier() = ReiCommon.Companion.FAN_WOLOLO
 
-    override fun getTitle() = Component.translatable("$MOD_ID.recipe.${ReiCommon.FAN_WOLOLO.path}")
+    override fun getTitle() = Component.translatable("${MOD_ID}.recipe.${ReiCommon.Companion.FAN_WOLOLO.path}")
 
     override fun getIcon(): Renderer = TwoIconRenderer(AllItems.PROPELLER, Items.SAFE_EVOKER_MANSION)
 

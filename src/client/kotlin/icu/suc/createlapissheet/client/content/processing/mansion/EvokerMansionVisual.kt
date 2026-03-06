@@ -1,4 +1,4 @@
-package icu.suc.createlapissheet.client.renderer.block.entity
+package icu.suc.createlapissheet.client.content.processing.mansion
 
 import com.zurrtum.create.catnip.math.AngleHelper
 import com.zurrtum.create.client.catnip.animation.AnimationTickHolder
@@ -11,9 +11,9 @@ import com.zurrtum.create.client.flywheel.lib.model.Models
 import com.zurrtum.create.client.flywheel.lib.visual.AbstractBlockEntityVisual
 import com.zurrtum.create.client.flywheel.lib.visual.SimpleDynamicVisual
 import com.zurrtum.create.client.flywheel.lib.visual.SimpleTickableVisual
-import icu.suc.createlapissheet.block.EvokerMansionBlock
-import icu.suc.createlapissheet.block.entity.EvokerMansionBlockEntity
 import icu.suc.createlapissheet.client.PartialModels
+import icu.suc.createlapissheet.content.processing.mansion.EvokerMansionBlock
+import icu.suc.createlapissheet.content.processing.mansion.EvokerMansionBlockEntity
 import net.minecraft.client.renderer.LightTexture
 import net.minecraft.core.Direction
 import net.minecraft.util.Mth

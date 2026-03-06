@@ -1,15 +1,15 @@
-package icu.suc.createlapissheet.client.renderer.block.entity
+package icu.suc.createlapissheet.client.content.processing.mansion
 
 import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.vertex.VertexConsumer
-import com.zurrtum.create.catnip.animation.LerpedFloat.Chaser
+import com.zurrtum.create.catnip.animation.LerpedFloat
 import com.zurrtum.create.catnip.math.AngleHelper
 import com.zurrtum.create.client.catnip.animation.AnimationTickHolder
 import com.zurrtum.create.client.catnip.render.CachedBuffers
 import com.zurrtum.create.client.catnip.render.SuperByteBuffer
-import icu.suc.createlapissheet.block.EvokerMansionBlock.Evoker.*
-import icu.suc.createlapissheet.block.entity.EvokerMansionBlockEntity
 import icu.suc.createlapissheet.client.PartialModels
+import icu.suc.createlapissheet.content.processing.mansion.EvokerMansionBlock
+import icu.suc.createlapissheet.content.processing.mansion.EvokerMansionBlockEntity
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.LightTexture
 import net.minecraft.client.renderer.SubmitNodeCollector
@@ -36,7 +36,7 @@ class EvokerMansionRenderer :
         overlay: ModelFeatureRenderer.CrumblingOverlay?
     ) {
         val evoker = be.getEvokerFromBlock()
-        if (evoker == NONE) return
+        if (evoker == EvokerMansionBlock.Evoker.NONE) return
 
         BlockEntityRenderState.extractBase(be, state, overlay)
 
@@ -49,7 +49,7 @@ class EvokerMansionRenderer :
             val hashCode = be.hashCode()
 
             when (evoker) {
-                ANGRY -> {
+                EvokerMansionBlock.Evoker.ANGRY -> {
                     val renderTick = time / 4f + (hashCode % 13)
                     this.headX = Mth.sin(renderTick.toDouble() * 1.2f) / 64 - (animation * .75f)
                     this.headY = Mth.sin(renderTick.toDouble() * 2.3f) / 64 - (animation * .65f)
@@ -57,7 +57,7 @@ class EvokerMansionRenderer :
                     this.horizontalAngle = AngleHelper.rad(be.headAngle.getValue(tickProgress).toDouble())
                 }
 
-                CASTING -> {
+                EvokerMansionBlock.Evoker.CASTING -> {
                     val renderTick = time + (hashCode % 360)
                     this.headY = 0.1f
                     this.horizontalAngle =
@@ -79,7 +79,7 @@ class EvokerMansionRenderer :
     companion object {
         @JvmStatic
         fun tickAnimation(be: EvokerMansionBlockEntity) {
-            val angry = be.getEvokerFromBlock() == ANGRY
+            val angry = be.getEvokerFromBlock() == EvokerMansionBlock.Evoker.ANGRY
 
             if (angry) {
                 var target = 0f
@@ -102,11 +102,11 @@ class EvokerMansionRenderer :
                     be.headAngle.getValue().toDouble(),
                     target.toDouble()
                 )
-                be.headAngle.chase(target.toDouble(), .25, Chaser.exp(5.0))
+                be.headAngle.chase(target.toDouble(), .25, LerpedFloat.Chaser.exp(5.0))
                 be.headAngle.tickChaser()
             }
 
-            be.headAnimation.chase(if (angry) 0.0 else 1.0, 0.25, Chaser.exp(0.25))
+            be.headAnimation.chase(if (angry) 0.0 else 1.0, 0.25, LerpedFloat.Chaser.exp(0.25))
             be.headAnimation.tickChaser()
         }
     }

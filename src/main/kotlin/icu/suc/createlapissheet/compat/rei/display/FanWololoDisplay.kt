@@ -1,4 +1,4 @@
-package icu.suc.createlapissheet.compat.rei
+package icu.suc.createlapissheet.compat.rei.display
 
 import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
@@ -13,7 +13,7 @@ import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.Identifier
 import net.minecraft.world.item.crafting.RecipeHolder
-import java.util.*
+import java.util.Optional
 
 class FanWololoDisplay(
     val input: EntryIngredient,
@@ -34,7 +34,7 @@ class FanWololoDisplay(
 
     override fun getOutputEntries() = outputs.map { EntryIngredients.of(it.create()) }
 
-    override fun getCategoryIdentifier() = ReiCommon.FAN_WOLOLO
+    override fun getCategoryIdentifier() = ReiCommon.Companion.FAN_WOLOLO
 
     override fun getDisplayLocation() = location
 

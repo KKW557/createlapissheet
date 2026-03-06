@@ -4,7 +4,7 @@ import com.zurrtum.create.AllItems
 import com.zurrtum.create.client.compat.jei.JeiClientPlugin
 import com.zurrtum.create.client.compat.jei.display.MysteriousItemConversionDisplay
 import icu.suc.createlapissheet.Items
-import icu.suc.createlapissheet.client.compat.jei.FanWololoCategory
+import icu.suc.createlapissheet.client.compat.jei.category.FanWololoCategory
 import icu.suc.createlapissheet.identifier
 import icu.suc.createlapissheet.item.crafting.WololoRecipe
 import mezz.jei.api.IModPlugin

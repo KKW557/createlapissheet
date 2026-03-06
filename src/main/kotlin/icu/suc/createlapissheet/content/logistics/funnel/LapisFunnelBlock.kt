@@ -1,4 +1,4 @@
-package icu.suc.createlapissheet.block
+package icu.suc.createlapissheet.content.logistics.funnel
 
 import com.zurrtum.create.content.logistics.funnel.BeltFunnelBlock
 import com.zurrtum.create.content.logistics.funnel.FunnelBlock

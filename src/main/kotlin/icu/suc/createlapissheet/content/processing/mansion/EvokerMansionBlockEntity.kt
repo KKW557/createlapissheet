@@ -1,4 +1,4 @@
-package icu.suc.createlapissheet.block.entity
+package icu.suc.createlapissheet.content.processing.mansion
 
 import com.zurrtum.create.api.behaviour.BlockEntityBehaviour
 import com.zurrtum.create.catnip.animation.LerpedFloat
@@ -6,7 +6,6 @@ import com.zurrtum.create.catnip.math.AngleHelper
 import com.zurrtum.create.foundation.blockEntity.SmartBlockEntity
 import icu.suc.createlapissheet.BlockEntityTypes
 import icu.suc.createlapissheet.Handle
-import icu.suc.createlapissheet.block.EvokerMansionBlock
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.world.level.block.HorizontalDirectionalBlock
@@ -35,13 +34,13 @@ class EvokerMansionBlockEntity(pos: BlockPos, state: BlockState) :
         level?.let {
             if (!it.isClientSide) return
 
-            Handle.INSTANCE.tickEvokerMansionAnimation(this)
+            Handle.Companion.INSTANCE.tickEvokerMansionAnimation(this)
         }
     }
 
     override fun addBehaviours(behaviours: List<BlockEntityBehaviour<*>?>?) {}
 
-    fun getEvokerFromBlock() = EvokerMansionBlock.getEvokerOf(blockState)
+    fun getEvokerFromBlock() = EvokerMansionBlock.Companion.getEvokerOf(blockState)
 
-    fun getNauseaFromBlock() = EvokerMansionBlock.getNauseaOf(blockState)
+    fun getNauseaFromBlock() = EvokerMansionBlock.Companion.getNauseaOf(blockState)
 }

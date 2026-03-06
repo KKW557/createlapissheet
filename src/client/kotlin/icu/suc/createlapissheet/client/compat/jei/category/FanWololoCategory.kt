@@ -1,4 +1,4 @@
-package icu.suc.createlapissheet.client.compat.jei
+package icu.suc.createlapissheet.client.compat.jei.category
 
 import com.zurrtum.create.AllItems
 import com.zurrtum.create.client.compat.jei.CreateCategory
@@ -9,8 +9,8 @@ import icu.suc.createlapissheet.Blocks
 import icu.suc.createlapissheet.Items
 import icu.suc.createlapissheet.MOD_ID
 import icu.suc.createlapissheet.RecipeTypes
-import icu.suc.createlapissheet.block.EvokerMansionBlock
 import icu.suc.createlapissheet.client.compat.JeiModPlugin
+import icu.suc.createlapissheet.content.processing.mansion.EvokerMansionBlock
 import icu.suc.createlapissheet.item.crafting.WololoRecipe
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView
@@ -24,9 +24,9 @@ import org.joml.Matrix3x2f
 import kotlin.math.min
 
 class FanWololoCategory : CreateCategory<RecipeHolder<WololoRecipe>>() {
-    override fun getRecipeType() = JeiModPlugin.FAN_WOLOLO
+    override fun getRecipeType() = JeiModPlugin.Companion.FAN_WOLOLO
 
-    override fun getTitle() = Component.translatable("$MOD_ID.recipe.${JeiModPlugin.FAN_WOLOLO.uid.path}")
+    override fun getTitle() = Component.translatable("${MOD_ID}.recipe.${JeiModPlugin.Companion.FAN_WOLOLO.uid.path}")
 
     override fun getHeight() = 72
 
@@ -88,8 +88,8 @@ class FanWololoCategory : CreateCategory<RecipeHolder<WololoRecipe>>() {
                 56,
                 4,
                 Blocks.EVOKER_MANSION.defaultBlockState()
-                    .setValue(EvokerMansionBlock.EVOKER, EvokerMansionBlock.Evoker.CASTING)
-                    .setValue(EvokerMansionBlock.NAUSEA, recipe.nausea)
+                    .setValue(EvokerMansionBlock.Companion.EVOKER, EvokerMansionBlock.Evoker.CASTING)
+                    .setValue(EvokerMansionBlock.Companion.NAUSEA, recipe.nausea)
             )
         )
     }

@@ -1,4 +1,4 @@
-package icu.suc.createlapissheet.block
+package icu.suc.createlapissheet.content.processing.mansion
 
 import com.mojang.serialization.MapCodec
 import com.zurrtum.create.foundation.block.IBE
@@ -6,8 +6,8 @@ import icu.suc.createlapissheet.BlockEntityTypes
 import icu.suc.createlapissheet.Items
 import icu.suc.createlapissheet.Shapes
 import icu.suc.createlapissheet.Tags
-import icu.suc.createlapissheet.block.entity.EvokerMansionBlockEntity
-import icu.suc.createlapissheet.item.EvokerMansionBlockItem
+import icu.suc.createlapissheet.content.processing.mansion.EvokerMansionBlockEntity
+import icu.suc.createlapissheet.content.processing.mansion.EvokerMansionBlockItem
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.core.component.DataComponents
@@ -218,7 +218,7 @@ class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(pr
 
         companion object {
             @JvmField
-            val CODEC = StringRepresentable.fromEnum { Evoker.entries.toTypedArray() }
+            val CODEC = StringRepresentable.fromEnum { entries.toTypedArray() }
 
             @JvmStatic
             fun byIndex(index: Int) = Evoker.entries[index]

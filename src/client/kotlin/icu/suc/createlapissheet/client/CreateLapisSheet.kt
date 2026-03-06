@@ -8,9 +8,9 @@ import com.zurrtum.create.client.flywheel.api.visualization.VisualizationManager
 import com.zurrtum.create.client.flywheel.lib.model.baked.PartialModel
 import icu.suc.createlapissheet.BlockEntityTypes
 import icu.suc.createlapissheet.Blocks
-import icu.suc.createlapissheet.block.entity.EvokerMansionBlockEntity
-import icu.suc.createlapissheet.client.renderer.block.entity.EvokerMansionRenderer
-import icu.suc.createlapissheet.client.renderer.block.entity.EvokerMansionVisual
+import icu.suc.createlapissheet.content.processing.mansion.EvokerMansionBlockEntity
+import icu.suc.createlapissheet.client.content.processing.mansion.EvokerMansionRenderer
+import icu.suc.createlapissheet.client.content.processing.mansion.EvokerMansionVisual
 import icu.suc.createlapissheet.identifier
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer
 

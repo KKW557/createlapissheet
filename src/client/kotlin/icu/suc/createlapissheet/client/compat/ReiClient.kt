@@ -3,7 +3,7 @@ package icu.suc.createlapissheet.client.compat
 import com.zurrtum.create.AllItems
 import com.zurrtum.create.client.compat.rei.display.MysteriousItemConversionDisplay
 import icu.suc.createlapissheet.Items
-import icu.suc.createlapissheet.client.compat.rei.FanWololoCategory
+import icu.suc.createlapissheet.client.compat.rei.category.FanWololoCategory
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry
