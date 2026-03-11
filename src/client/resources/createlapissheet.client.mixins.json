@@ -3,6 +3,7 @@
   "package": "icu.suc.createlapissheet.client.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "MixinBeltModel",
     "MixinClientPacketListener"
   ],
   "injectors": {

@@ -8,9 +8,11 @@ import icu.suc.createlapissheet.Tags
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.core.component.DataComponents
+import net.minecraft.core.particles.ParticleTypes
 import net.minecraft.core.registries.Registries
 import net.minecraft.sounds.SoundEvents
 import net.minecraft.sounds.SoundSource
+import net.minecraft.util.RandomSource
 import net.minecraft.util.StringRepresentable
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
@@ -25,6 +27,7 @@ import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.LevelReader
 import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.EnchantingTableBlock
 import net.minecraft.world.level.block.HorizontalDirectionalBlock
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.StateDefinition
@@ -166,6 +169,24 @@ class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(pr
     override fun getBlockEntityClass() = EvokerMansionBlockEntity::class.java
 
     override fun getBlockEntityType() = BlockEntityTypes.EVOKER
+
+    override fun animateTick(blockState: BlockState, level: Level, blockPos: BlockPos, randomSource: RandomSource) {
+        super.animateTick(blockState, level, blockPos, randomSource)
+
+        for (blockPos2 in EnchantingTableBlock.BOOKSHELF_OFFSETS) {
+            if (randomSource.nextInt(16) == 0 && EnchantingTableBlock.isValidBookShelf(level, blockPos, blockPos2)) {
+                level.addParticle(
+                    ParticleTypes.ENCHANT,
+                    blockPos.x.toDouble() + 0.5,
+                    blockPos.y.toDouble() + 2.0,
+                    blockPos.z.toDouble() + 0.5,
+                    (blockPos2.x.toFloat() + randomSource.nextFloat()).toDouble() - 0.5,
+                    (blockPos2.y.toFloat() - randomSource.nextFloat() - 1.0f).toDouble(),
+                    (blockPos2.z.toFloat() + randomSource.nextFloat()).toDouble() - 0.5
+                )
+            }
+        }
+    }
 
     companion object {
         @JvmField

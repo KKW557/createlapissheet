@@ -1,0 +1,10 @@
+{
+  "type": "create:item_application",
+  "target": "create:yellow_seat",
+  "ingredient": "minecraft:totem_of_undying",
+  "results": [
+    {
+      "id": "createlapissheet:yellow_seat_of_undying"
+    }
+  ]
+}

@@ -9,15 +9,16 @@ import com.zurrtum.create.AllRecipeSets
 import com.zurrtum.create.AllShapes
 import com.zurrtum.create.api.registry.CreateRegistries
 import com.zurrtum.create.content.contraptions.actors.seat.SeatBlock
+import com.zurrtum.create.content.decoration.encasing.CasingBlock
 import com.zurrtum.create.content.kinetics.fan.processing.FanProcessingType
 import com.zurrtum.create.content.logistics.funnel.BeltFunnelBlock
 import com.zurrtum.create.content.logistics.funnel.FunnelItem
 import icu.suc.createlapissheet.content.kinetics.fan.processing.WololoFanProcessingType
+import icu.suc.createlapissheet.content.kinetics.fan.processing.WololoRecipe
 import icu.suc.createlapissheet.content.logistics.funnel.LapisFunnelBlock
 import icu.suc.createlapissheet.content.processing.mansion.EvokerMansionBlock
 import icu.suc.createlapissheet.content.processing.mansion.EvokerMansionBlockEntity
 import icu.suc.createlapissheet.content.processing.mansion.EvokerMansionBlockItem
-import icu.suc.createlapissheet.content.kinetics.fan.processing.WololoRecipe
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup
 import net.minecraft.core.Registry
 import net.minecraft.core.registries.BuiltInRegistries
@@ -29,6 +30,7 @@ import net.minecraft.tags.TagKey
 import net.minecraft.world.item.*
 import net.minecraft.world.item.crafting.*
 import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.SoundType
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockBehaviour
@@ -46,6 +48,14 @@ val LOGGER: Logger = LogUtils.getLogger()
 fun identifier(path: String) = Identifier.fromNamespaceAndPath(MOD_ID, path)
 
 object Blocks {
+    @JvmField
+    val LAPIS_CASING = register(
+        "lapis_casing",
+        ::CasingBlock,
+        BlockBehaviour.Properties.ofFullCopy(MinecraftBlocks.LAPIS_BLOCK).mapColor(MapColor.TERRACOTTA_BLUE)
+            .sound(SoundType.NETHERITE_BLOCK)
+    )
+
     @JvmField
     val LAPIS_FUNNEL = register(
         "lapis_funnel",
@@ -207,6 +217,9 @@ object Blocks {
 }
 
 object Items {
+    @JvmField
+    val LAPIS_CASING = register(Blocks.LAPIS_CASING)
+
     @JvmField
     val LAPIS_FUNNEL = register(Blocks.LAPIS_FUNNEL, ::FunnelItem)
 
@@ -415,6 +428,7 @@ object CreativeTabs {
             .icon { ItemStack(Items.LAPIS_SHEET) }
             .title(Component.translatable("itemGroup.$MOD_ID"))
             .displayItems { _, output ->
+                output.accept { Items.LAPIS_CASING }
                 output.accept { Items.LAPIS_FUNNEL }
                 output.accept { Items.LAPIS_SHEET }
                 output.accept { Items.INTEGRATED_CIRCUIT }

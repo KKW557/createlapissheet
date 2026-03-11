@@ -1,5 +1,6 @@
 {
   "values": [
+    "createlapissheet:lapis_casing",
     "createlapissheet:lapis_funnel",
     "createlapissheet:lapis_belt_funnel",
     "createlapissheet:evoker_mansion"

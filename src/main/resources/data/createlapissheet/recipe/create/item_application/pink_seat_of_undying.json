@@ -1,0 +1,10 @@
+{
+  "type": "create:item_application",
+  "target": "create:pink_seat",
+  "ingredient": "minecraft:totem_of_undying",
+  "results": [
+    {
+      "id": "createlapissheet:pink_seat_of_undying"
+    }
+  ]
+}

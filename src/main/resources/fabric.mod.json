@@ -30,7 +30,7 @@
     "client": [
       {
         "adapter": "kotlin",
-        "value": "icu.suc.createlapissheet.Client"
+        "value": "icu.suc.createlapissheet.client.Client"
       }
     ],
     "jei_mod_plugin": [
