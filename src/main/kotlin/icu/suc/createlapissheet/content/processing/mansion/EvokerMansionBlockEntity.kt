@@ -5,7 +5,6 @@ import com.zurrtum.create.catnip.animation.LerpedFloat
 import com.zurrtum.create.catnip.math.AngleHelper
 import com.zurrtum.create.foundation.blockEntity.SmartBlockEntity
 import icu.suc.createlapissheet.BlockEntityTypes
-import icu.suc.createlapissheet.Handle
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.world.level.block.HorizontalDirectionalBlock
@@ -31,16 +30,15 @@ class EvokerMansionBlockEntity(pos: BlockPos, state: BlockState) :
     override fun tick() {
         super.tick()
 
-        level?.let {
-            if (!it.isClientSide) return
-
-            Handle.INSTANCE.tickEvokerMansionAnimation(this)
-        }
+        val level = level ?: return
+        if (!level.isClientSide) return
     }
 
-    override fun addBehaviours(behaviours: List<BlockEntityBehaviour<*>?>?) {}
+    override fun addBehaviours(behaviours: List<BlockEntityBehaviour<*>>) {}
 
     fun getEvokerFromBlock() = EvokerMansionBlock.getEvokerOf(blockState)
 
-    fun getNauseaFromBlock() = EvokerMansionBlock.getNauseaOf(blockState)
+    fun isNauseaFromBlock() = EvokerMansionBlock.isNauseaOf(blockState)
+
+    fun isEnchantingFromBlock() = EvokerMansionBlock.isEnchantingOf(blockState)
 }

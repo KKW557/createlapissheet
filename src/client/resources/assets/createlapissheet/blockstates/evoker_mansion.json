@@ -21,10 +21,21 @@
     {
       "when": {
         "evoker": "casting",
-        "nausea": "false"
+        "nausea": "false",
+        "enchanting": "false"
       },
       "apply": {
         "model": "createlapissheet:block/evoker_mansion/bannered/red"
+      }
+    },
+    {
+      "when": {
+        "evoker": "casting",
+        "nausea": "false",
+        "enchanting": "true"
+      },
+      "apply": {
+        "model": "createlapissheet:block/evoker_mansion/bannered/purple"
       }
     },
     {

@@ -38,7 +38,7 @@ class WololoFanProcessingType : FanProcessingType {
         level.getBlockState(pos).let {
             if (it.`is`(Tags.Block.FAN_PROCESSING_CATALYSTS_WOLOLO)) {
                 if (EvokerMansionBlock.getEvokerOf(it) == EvokerMansionBlock.Evoker.CASTING) {
-                    nausea = EvokerMansionBlock.getNauseaOf(it)
+                    nausea = EvokerMansionBlock.isNauseaOf(it)
                     return true
                 }
             }

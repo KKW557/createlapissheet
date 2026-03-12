@@ -73,7 +73,7 @@ class EvokerMansionVisual(
                 val renderTick = time + (hashCode % 360)
                 headY = 0.1f
                 horizontalAngle =
-                    AngleHelper.rad(renderTick.toDouble() * if (blockEntity.getNauseaFromBlock()) 4 else -4)
+                    AngleHelper.rad(renderTick.toDouble() * if (blockEntity.isNauseaFromBlock()) 4 else -4)
             }
         }
 

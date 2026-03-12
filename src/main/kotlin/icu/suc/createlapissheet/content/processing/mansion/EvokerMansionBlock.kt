@@ -42,7 +42,9 @@ class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(pr
     IBE<EvokerMansionBlockEntity> {
 
     init {
-        registerDefaultState(defaultBlockState().setValue(EVOKER, Evoker.NONE).setValue(NAUSEA, false))
+        registerDefaultState(
+            defaultBlockState().setValue(EVOKER, Evoker.NONE).setValue(NAUSEA, false).setValue(ENCHANTING, false)
+        )
     }
 
     override fun codec() = CODEC
@@ -78,6 +80,16 @@ class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(pr
         hand: InteractionHand,
         result: BlockHitResult
     ): InteractionResult {
+        if (getEvokerOf(state) != Evoker.CASTING) return super.useItemOn(
+            itemStack,
+            state,
+            level,
+            pos,
+            player,
+            hand,
+            result
+        )
+
         var r: InteractionResult? = null
 
         itemStack.get(DataComponents.CONSUMABLE)?.let { consumable ->
@@ -104,7 +116,7 @@ class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(pr
                 }
             }
             if (!flagged) return@let
-            if (getNauseaOf(state) == nausea) return@let
+            if (isNauseaOf(state) == nausea) return@let
             if (level.isClientSide) {
                 r = InteractionResult.SUCCESS
                 return@let
@@ -152,7 +164,7 @@ class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(pr
 
     override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
         super.createBlockStateDefinition(builder)
-        builder.add(EVOKER, NAUSEA, FACING)
+        builder.add(EVOKER, NAUSEA, ENCHANTING, FACING)
     }
 
     override fun hasAnalogOutputSignal(blockState: BlockState) = true
@@ -170,19 +182,21 @@ class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(pr
 
     override fun getBlockEntityType() = BlockEntityTypes.EVOKER
 
-    override fun animateTick(blockState: BlockState, level: Level, blockPos: BlockPos, randomSource: RandomSource) {
-        super.animateTick(blockState, level, blockPos, randomSource)
+    override fun animateTick(state: BlockState, level: Level, pos: BlockPos, source: RandomSource) {
+        super.animateTick(state, level, pos, source)
+
+        if (!isEnchantingOf(state)) return
 
         for (blockPos2 in EnchantingTableBlock.BOOKSHELF_OFFSETS) {
-            if (randomSource.nextInt(16) == 0 && EnchantingTableBlock.isValidBookShelf(level, blockPos, blockPos2)) {
+            if (source.nextInt(16) == 0 && EnchantingTableBlock.isValidBookShelf(level, pos, blockPos2)) {
                 level.addParticle(
                     ParticleTypes.ENCHANT,
-                    blockPos.x.toDouble() + 0.5,
-                    blockPos.y.toDouble() + 2.0,
-                    blockPos.z.toDouble() + 0.5,
-                    (blockPos2.x.toFloat() + randomSource.nextFloat()).toDouble() - 0.5,
-                    (blockPos2.y.toFloat() - randomSource.nextFloat() - 1.0f).toDouble(),
-                    (blockPos2.z.toFloat() + randomSource.nextFloat()).toDouble() - 0.5
+                    pos.x.toDouble() + 0.5,
+                    pos.y.toDouble() + 2.0,
+                    pos.z.toDouble() + 0.5,
+                    (blockPos2.x.toFloat() + source.nextFloat()).toDouble() - 0.5,
+                    (blockPos2.y.toFloat() - source.nextFloat() - 1.0f).toDouble(),
+                    (blockPos2.z.toFloat() + source.nextFloat()).toDouble() - 0.5
                 )
             }
         }
@@ -198,6 +212,9 @@ class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(pr
         @JvmField
         val NAUSEA = BooleanProperty.create("nausea")
 
+        @JvmField
+        val ENCHANTING = BooleanProperty.create("enchanting")
+
         @JvmStatic
         fun getLight(state: BlockState) = if (state.getValue(EVOKER) == Evoker.CASTING) 7 else 0
 
@@ -206,8 +223,12 @@ class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(pr
             if (state.hasProperty(EVOKER)) state.getValue(EVOKER) else Evoker.NONE
 
         @JvmStatic
-        fun getNauseaOf(state: BlockState) =
+        fun isNauseaOf(state: BlockState) =
             if (state.hasProperty(NAUSEA)) state.getValue(NAUSEA) else false
+
+        @JvmStatic
+        fun isEnchantingOf(state: BlockState) =
+            if (state.hasProperty(ENCHANTING)) state.getValue(ENCHANTING) else false
 
         @JvmStatic
         fun isOminousBanner(itemStack: ItemStack, level: Level): Boolean {
