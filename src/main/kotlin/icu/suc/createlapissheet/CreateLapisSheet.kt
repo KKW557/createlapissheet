@@ -88,7 +88,6 @@ object Blocks {
         "lapis_casing",
         ::CasingBlock,
         BlockBehaviour.Properties.ofFullCopy(MinecraftBlocks.LAPIS_BLOCK).mapColor(MapColor.TERRACOTTA_BLUE)
-            .sound(SoundType.NETHERITE_BLOCK)
     )
 
     @JvmField

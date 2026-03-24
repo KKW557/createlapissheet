@@ -1,6 +1,8 @@
 package icu.suc.createlapissheet.infrastructure.fluids
 
 import net.minecraft.server.level.ServerLevel
+import net.minecraft.sounds.SoundEvents
+import net.minecraft.sounds.SoundSource
 import net.minecraft.stats.Stats
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
@@ -26,7 +28,13 @@ class ExperienceBucketItem(properties: Properties) : Item(properties) {
             val pos = result.blockPos
             val direction = result.direction
             if (level.mayInteract(player, pos) && player.mayUseItemAt(pos.relative(direction), direction, stack)) {
-                if (level is ServerLevel) ExperienceOrb.awardWithDirection(level, result.location, result.direction.unitVec3, 50)
+                if (level is ServerLevel) ExperienceOrb.awardWithDirection(
+                    level,
+                    result.location,
+                    result.direction.unitVec3,
+                    50
+                )
+                level.playSound(player, pos, SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.BLOCKS, 1.0f, 1.0f)
                 player.awardStat(Stats.ITEM_USED.get(this))
                 return InteractionResult.SUCCESS.heldItemTransformedTo(
                     ItemUtils.createFilledResult(
