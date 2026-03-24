@@ -1,0 +1,10 @@
+{
+  "parent": "create:block/belt_tunnel/item",
+  "textures": {
+    "direction": "createlapissheet:block/funnel/lapis_funnel_neutral",
+    "frame": "createlapissheet:block/funnel/lapis_funnel_frame",
+    "particle": "minecraft:block/lapis_block",
+    "top": "createlapissheet:block/tunnel/lapis_tunnel_top",
+    "tunnel": "createlapissheet:block/tunnel/lapis_tunnel"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "type": "createlapissheet:wololo",
+  "nausea": false,
+  "ingredient": "minecraft:blue_shulker_box",
+  "result": {
+    "id": "minecraft:red_shulker_box"
+  }
+}

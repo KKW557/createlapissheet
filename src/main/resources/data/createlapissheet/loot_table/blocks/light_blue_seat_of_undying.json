@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "createlapissheet:light_blue_seat_of_undying"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "createlapissheet:blocks/light_blue_seat_of_undying"
+}

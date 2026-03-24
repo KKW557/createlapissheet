@@ -1,0 +1,8 @@
+{
+  "type": "createlapissheet:wololo",
+  "nausea": false,
+  "ingredient": "minecraft:blue_bed",
+  "result": {
+    "id": "minecraft:red_bed"
+  }
+}

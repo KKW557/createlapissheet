@@ -7,8 +7,10 @@
     "MixinBeltBlock",
     "MixinBeltBlockEntity",
     "MixinBeltBlockEntityCasingType",
+    "MixinBucketFluidInventory",
     "MixinFunnelBlockEntity",
-    "MixinLivingEntity"
+    "MixinLivingEntity",
+    "accessor.AccessorAirCurrent$AirCurrentSegment"
   ],
   "plugin": "icu.suc.createlapissheet.mixin.Plugin",
   "injectors": {

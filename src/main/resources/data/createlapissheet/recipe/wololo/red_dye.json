@@ -1,0 +1,8 @@
+{
+  "type": "createlapissheet:wololo",
+  "nausea": false,
+  "ingredient": "minecraft:blue_dye",
+  "result": {
+    "id": "minecraft:red_dye"
+  }
+}

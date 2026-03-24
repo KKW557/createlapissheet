@@ -19,10 +19,12 @@
   "block.createlapissheet.red_seat_of_undying": "红色不死坐垫",
   "block.createlapissheet.white_seat_of_undying": "白色不死坐垫",
   "block.createlapissheet.yellow_seat_of_undying": "黄色不死坐垫",
+  "block.createlapissheet.experience": "经验",
   "item.createlapissheet.integrated_circuit": "集成电路板",
   "item.createlapissheet.lapis_sheet": "青金石板",
   "item.createlapissheet.safe_evoker_mansion": "安全的唤魔师府邸",
   "item.createlapissheet.empty_evoker_mansion": "空的唤魔师府邸",
+  "item.createlapissheet.experience_bucket": "附魔之桶",
   "itemGroup.createlapissheet": "机械动力：青金石板",
   "createlapissheet.recipe.fan_wololo": "批量呜噜噜"
 }

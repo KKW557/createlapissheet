@@ -1,47 +1,41 @@
 package icu.suc.createlapissheet.content.kinetics.fan.processing
 
-import com.zurrtum.create.catnip.theme.Color
-import com.zurrtum.create.content.kinetics.fan.processing.FanProcessingType
-import com.zurrtum.create.foundation.recipe.RecipeApplier
 import icu.suc.createlapissheet.RecipeTypes
 import icu.suc.createlapissheet.Tags
-import icu.suc.createlapissheet.content.processing.mansion.EvokerMansionBlock
 import net.minecraft.core.BlockPos
 import net.minecraft.core.particles.ColorParticleOption
 import net.minecraft.core.particles.ParticleTypes
 import net.minecraft.server.level.ServerLevel
-import net.minecraft.util.RandomSource
 import net.minecraft.world.effect.MobEffectInstance
 import net.minecraft.world.effect.MobEffects
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.LivingEntity
+import net.minecraft.world.entity.animal.sheep.Sheep
 import net.minecraft.world.entity.monster.illager.SpellcasterIllager
 import net.minecraft.world.item.DyeColor
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.item.crafting.RecipeHolder
 import net.minecraft.world.item.crafting.SingleRecipeInput
 import net.minecraft.world.level.Level
 import net.minecraft.world.phys.Vec3
-import java.util.*
-import java.util.function.Function
 
-class WololoFanProcessingType : FanProcessingType {
-    var nausea = false
-
+class WololoFanProcessingType(val nausea: Boolean) :
+    EvokerFanProcessingType(
+        Tags.Fluid.FAN_PROCESSING_CATALYSTS_WOLOLO,
+        Tags.Block.FAN_PROCESSING_CATALYSTS_WOLOLO,
+        if (nausea) DyeColor.BLUE.textureDiffuseColor else DyeColor.RED.textureDiffuseColor
+    ) {
     override fun isValidAt(level: Level, pos: BlockPos): Boolean {
         level.getFluidState(pos).let {
-            if (it.`is`(Tags.Fluid.FAN_PROCESSING_CATALYSTS_WOLOLO)) {
-                nausea = it.getValue(EvokerMansionBlock.NAUSEA)
-                return true
-            }
+            if (!it.`is`(Tags.Fluid.FAN_PROCESSING_CATALYSTS_WOLOLO)) return@let
+            val type = it.type
+            if (type !is IFanProcessingFluid) return true
+            if (type.isValid(this, it)) return true
         }
         level.getBlockState(pos).let {
-            if (it.`is`(Tags.Block.FAN_PROCESSING_CATALYSTS_WOLOLO)) {
-                if (EvokerMansionBlock.getEvokerOf(it) == EvokerMansionBlock.Evoker.CASTING) {
-                    nausea = EvokerMansionBlock.isNauseaOf(it)
-                    return true
-                }
-            }
+            if (!it.`is`(Tags.Block.FAN_PROCESSING_CATALYSTS_WOLOLO)) return@let
+            val type = it.block
+            if (type !is IFanProcessingBlock) return true
+            if (type.isValid(this, it)) return true
         }
         return false
     }
@@ -56,26 +50,15 @@ class WololoFanProcessingType : FanProcessingType {
     override fun process(
         stack: ItemStack,
         level: Level
-    ): List<ItemStack>? {
+    ): MutableList<ItemStack>? {
         val input = SingleRecipeInput(stack)
-        val recipe: Optional<RecipeHolder<WololoRecipe>> = (level as ServerLevel).recipeAccess()
+        val recipe = (level as ServerLevel).recipeAccess()
             .getRecipeFor<SingleRecipeInput, WololoRecipe>(RecipeTypes.WOLOLO, input, level)
-        return recipe.map(Function { entry: RecipeHolder<WololoRecipe> ->
-            RecipeApplier.applyRecipeOn(
-                level.getRandom(),
-                stack.count,
-                input,
-                entry.value()
-            )
-        }).orElse(null)
+        return recipe.map { mutableListOf(it.value.result) }.orElse(null)
     }
 
-    override fun spawnProcessingParticles(
-        level: Level,
-        pos: Vec3
-    ) {
+    override fun spawnProcessingParticles(level: Level, pos: Vec3) {
         if (level.random.nextInt(8) != 0) return
-
         val color = SpellcasterIllager.IllagerSpell.WOLOLO.spellColor
         level.addParticle(
             ColorParticleOption.create(
@@ -87,27 +70,17 @@ class WololoFanProcessingType : FanProcessingType {
             pos.x + (level.random.nextFloat() - .5f) * .5f,
             pos.y + .5f,
             pos.z + (level.random.nextFloat() - .5f) * .5f,
-            0.0,
-            0.0,
-            0.0
+            .0,
+            .125,
+            .0
         )
-    }
-
-    override fun morphAirFlow(
-        particleAccess: FanProcessingType.AirFlowParticleAccess,
-        random: RandomSource
-    ) {
-        val float = random.nextFloat()
-        particleAccess.setColor(
-            if (nausea) Color.mixColors(DyeColor.BLUE.fireworkColor, DyeColor.BLUE.textureDiffuseColor, float)
-            else Color.mixColors(DyeColor.RED.fireworkColor, DyeColor.RED.textureDiffuseColor, float)
-        )
-        particleAccess.setAlpha(.8f)
     }
 
     override fun affectEntity(entity: Entity?, level: Level?) {
-        if (!nausea) return
         if (entity !is LivingEntity) return
-        entity.addEffect(MobEffectInstance(MobEffects.NAUSEA, 80, 0, false, false))
+        if (nausea) entity.addEffect(MobEffectInstance(MobEffects.NAUSEA, 80, 0, false, false))
+        if (entity !is Sheep) return
+        if (nausea && entity.color == DyeColor.RED) entity.color = DyeColor.BLUE
+        else if (!nausea && entity.color == DyeColor.BLUE) entity.color = DyeColor.RED
     }
 }

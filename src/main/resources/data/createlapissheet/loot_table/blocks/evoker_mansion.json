@@ -1,0 +1,76 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "minecraft:survives_explosion"
+            },
+            {
+              "block": "createlapissheet:evoker_mansion",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "evoker": "none"
+              }
+            }
+          ],
+          "name": "createlapissheet:empty_evoker_mansion"
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "minecraft:survives_explosion"
+            },
+            {
+              "block": "createlapissheet:evoker_mansion",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "evoker": "angry"
+              }
+            }
+          ],
+          "name": "createlapissheet:evoker_mansion"
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "minecraft:survives_explosion"
+            },
+            {
+              "block": "createlapissheet:evoker_mansion",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "evoker": "wololo"
+              }
+            }
+          ],
+          "name": "createlapissheet:safe_evoker_mansion"
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "minecraft:survives_explosion"
+            },
+            {
+              "block": "createlapissheet:evoker_mansion",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "evoker": "enchanting"
+              }
+            }
+          ],
+          "name": "createlapissheet:safe_evoker_mansion"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "createlapissheet:blocks/evoker_mansion"
+}

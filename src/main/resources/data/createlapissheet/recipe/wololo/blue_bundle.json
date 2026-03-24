@@ -1,0 +1,8 @@
+{
+  "type": "createlapissheet:wololo",
+  "nausea": true,
+  "ingredient": "minecraft:red_bundle",
+  "result": {
+    "id": "minecraft:blue_bundle"
+  }
+}

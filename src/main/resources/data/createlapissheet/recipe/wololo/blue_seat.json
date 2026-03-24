@@ -1,0 +1,8 @@
+{
+  "type": "createlapissheet:wololo",
+  "nausea": true,
+  "ingredient": "create:red_seat",
+  "result": {
+    "id": "create:blue_seat"
+  }
+}

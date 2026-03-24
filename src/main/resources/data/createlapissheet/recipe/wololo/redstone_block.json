@@ -2,9 +2,7 @@
   "type": "createlapissheet:wololo",
   "nausea": false,
   "ingredient": "minecraft:lapis_block",
-  "results": [
-    {
-      "id": "minecraft:redstone_block"
-    }
-  ]
+  "result": {
+    "id": "minecraft:redstone_block"
+  }
 }

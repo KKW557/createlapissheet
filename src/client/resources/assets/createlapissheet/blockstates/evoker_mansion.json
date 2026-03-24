@@ -20,9 +20,8 @@
     },
     {
       "when": {
-        "evoker": "casting",
-        "nausea": "false",
-        "enchanting": "false"
+        "evoker": "wololo",
+        "nausea": "false"
       },
       "apply": {
         "model": "createlapissheet:block/evoker_mansion/bannered/red"
@@ -30,21 +29,19 @@
     },
     {
       "when": {
-        "evoker": "casting",
-        "nausea": "false",
-        "enchanting": "true"
-      },
-      "apply": {
-        "model": "createlapissheet:block/evoker_mansion/bannered/purple"
-      }
-    },
-    {
-      "when": {
-        "evoker": "casting",
+        "evoker": "wololo",
         "nausea": "true"
       },
       "apply": {
         "model": "createlapissheet:block/evoker_mansion/bannered/blue"
+      }
+    },
+    {
+      "when": {
+        "evoker": "enchanting"
+      },
+      "apply": {
+        "model": "createlapissheet:block/evoker_mansion/bannered/purple"
       }
     }
   ]

@@ -1,0 +1,34 @@
+{
+  "parent": "createlapissheet:root",
+  "criteria": {
+    "0": {
+      "conditions": {
+        "items": [
+          {
+            "items": "createlapissheet:lapis_sheet"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancement.createlapissheet.lapis_sheet.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "createlapissheet:lapis_sheet"
+    },
+    "title": {
+      "translate": "advancement.createlapissheet.lapis_sheet"
+    }
+  },
+  "requirements": [
+    [
+      "0"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

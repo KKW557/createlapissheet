@@ -1,0 +1,8 @@
+{
+  "type": "createlapissheet:wololo",
+  "nausea": true,
+  "ingredient": "minecraft:fire_coral",
+  "result": {
+    "id": "minecraft:tube_coral"
+  }
+}

@@ -1,0 +1,12 @@
+﻿{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "#c:dyes/yellow",
+    "#createlapissheet:seats_of_undying"
+  ],
+  "result": {
+    "count": 1,
+    "id": "createlapissheet:yellow_seat_of_undying"
+  }
+}

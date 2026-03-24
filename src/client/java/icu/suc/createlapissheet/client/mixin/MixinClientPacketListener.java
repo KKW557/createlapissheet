@@ -15,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ClientPacketListener.class)
 public abstract class MixinClientPacketListener {
-
     @Inject(method = "findTotem", at = @At(value = "NEW", target = "(Lnet/minecraft/world/level/ItemLike;)Lnet/minecraft/world/item/ItemStack;"), cancellable = true)
     private static void injectFindTotem(@NonNull Player player, CallbackInfoReturnable<ItemStack> cir) {
         if (!(player.getVehicle() instanceof SeatEntity seat)) return;

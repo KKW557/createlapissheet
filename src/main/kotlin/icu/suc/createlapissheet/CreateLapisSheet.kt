@@ -3,24 +3,34 @@
 package icu.suc.createlapissheet
 
 import com.mojang.logging.LogUtils
-import com.zurrtum.create.AllBlockEntityTypes
-import com.zurrtum.create.AllBlocks
-import com.zurrtum.create.AllRecipeSets
-import com.zurrtum.create.AllShapes
+import com.zurrtum.create.*
+import com.zurrtum.create.api.effect.OpenPipeEffectHandler
 import com.zurrtum.create.api.registry.CreateRegistries
 import com.zurrtum.create.content.contraptions.actors.seat.SeatBlock
 import com.zurrtum.create.content.decoration.encasing.CasingBlock
+import com.zurrtum.create.content.kinetics.belt.BeltBlockEntity
 import com.zurrtum.create.content.kinetics.fan.processing.FanProcessingType
 import com.zurrtum.create.content.logistics.funnel.BeltFunnelBlock
 import com.zurrtum.create.content.logistics.funnel.FunnelItem
+import com.zurrtum.create.infrastructure.fluids.BucketFluidInventory
+import com.zurrtum.create.infrastructure.fluids.FlowableFluid
+import com.zurrtum.create.infrastructure.fluids.FlowableFluid.Still
+import com.zurrtum.create.infrastructure.fluids.FluidEntry
+import com.zurrtum.create.infrastructure.fluids.FluidItemInventoryWrapper
+import icu.suc.createlapissheet.content.kinetics.fan.processing.EnchantingFanProcessingType
 import icu.suc.createlapissheet.content.kinetics.fan.processing.WololoFanProcessingType
 import icu.suc.createlapissheet.content.kinetics.fan.processing.WololoRecipe
 import icu.suc.createlapissheet.content.logistics.funnel.LapisFunnelBlock
 import icu.suc.createlapissheet.content.processing.mansion.EvokerMansionBlock
 import icu.suc.createlapissheet.content.processing.mansion.EvokerMansionBlockEntity
 import icu.suc.createlapissheet.content.processing.mansion.EvokerMansionBlockItem
+import icu.suc.createlapissheet.impl.effect.ExperienceEffectHandler
+import icu.suc.createlapissheet.infrastructure.fluids.ExperienceBucketItem
+import net.fabricmc.fabric.api.gamerule.v1.GameRuleBuilder
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup
 import net.minecraft.core.Registry
+import net.minecraft.core.component.DataComponentType
+import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.chat.Component
@@ -29,23 +39,48 @@ import net.minecraft.resources.ResourceKey
 import net.minecraft.tags.TagKey
 import net.minecraft.world.item.*
 import net.minecraft.world.item.crafting.*
+import net.minecraft.world.item.enchantment.Enchantment
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.SoundType
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockBehaviour
+import net.minecraft.world.level.gamerules.GameRuleCategory
+import net.minecraft.world.level.material.Fluid
 import net.minecraft.world.level.material.MapColor
 import net.minecraft.world.phys.shapes.VoxelShape
 import org.slf4j.Logger
 import java.util.*
 import java.util.function.Function
+import java.util.function.Supplier
 
 typealias MinecraftBlocks = net.minecraft.world.level.block.Blocks
+typealias MinecraftItems = net.minecraft.world.item.Items
 
 const val MOD_ID = "createlapissheet"
 val LOGGER: Logger = LogUtils.getLogger()
 
 fun identifier(path: String) = Identifier.fromNamespaceAndPath(MOD_ID, path)
+
+object GameRules {
+    @JvmField
+    val EXPERIENCE_FLUID_TO_ORB =
+        register("experience_fluid_to_orb", GameRuleBuilder.forBoolean(true).category(GameRuleCategory.SPAWNING))
+
+    @JvmField
+    val MIN_AWARD_XP =
+        register("min_award_xp", GameRuleBuilder.forInteger(1).category(GameRuleCategory.SPAWNING).range(1, 32767))
+
+    @JvmStatic
+    fun <T : Any> register(id: String, builder: GameRuleBuilder<T>) = register(identifier(id), builder)
+
+    @JvmStatic
+    fun <T : Any> register(id: Identifier, builder: GameRuleBuilder<T>) = builder.buildAndRegister(id)
+
+    @JvmStatic
+    fun register() {
+    }
+}
 
 object Blocks {
     @JvmField
@@ -216,6 +251,36 @@ object Blocks {
     }
 }
 
+object Fluids {
+    @JvmField
+    val EXPERIENCE = register("experience")
+
+    @JvmStatic
+    fun register(id: String) = register(identifier(id))
+
+    @JvmStatic
+    fun register(id: Identifier): FlowableFluid {
+        val entry = FluidEntry()
+        entry.still = Still(entry)
+        entry.flowing = FlowableFluid.Flowing(entry)
+        Registry.register<Fluid, FlowableFluid>(
+            BuiltInRegistries.FLUID,
+            ResourceKey.create(Registries.FLUID, id),
+            entry.still
+        )
+        Registry.register<Fluid, FlowableFluid>(
+            BuiltInRegistries.FLUID,
+            ResourceKey.create(Registries.FLUID, id.withPrefix("flowing_")),
+            entry.flowing
+        )
+        return entry.still
+    }
+
+    @JvmStatic
+    fun register() {
+    }
+}
+
 object Items {
     @JvmField
     val LAPIS_CASING = register(Blocks.LAPIS_CASING)
@@ -237,6 +302,15 @@ object Items {
 
     @JvmField
     val EMPTY_EVOKER_MANSION = register("empty_evoker_mansion", EvokerMansionBlockItem::empty)
+
+    @JvmField
+    val EXPERIENCE_BUCKET = register(
+        "experience_bucket",
+        ::ExperienceBucketItem,
+        Item.Properties().craftRemainder(MinecraftItems.BUCKET).stacksTo(1)
+            .rarity(Rarity.UNCOMMON)
+            .component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true)
+    )
 
     @JvmField
     val WHITE_SEAT_OF_UNDYING = register(Blocks.WHITE_SEAT_OF_UNDYING)
@@ -352,6 +426,9 @@ object Tags {
         @JvmField
         val FAN_PROCESSING_CATALYSTS_WOLOLO = block("fan_processing_catalysts/wololo")
 
+        @JvmField
+        val FAN_PROCESSING_CATALYSTS_ENCHANTING = block("fan_processing_catalysts/enchanting")
+
         @JvmStatic
         fun block(id: String) = block(identifier(id))
 
@@ -366,6 +443,9 @@ object Tags {
     object Fluid {
         @JvmField
         val FAN_PROCESSING_CATALYSTS_WOLOLO = fluid("fan_processing_catalysts/wololo")
+
+        @JvmField
+        val FAN_PROCESSING_CATALYSTS_ENCHANTING = fluid("fan_processing_catalysts/enchanting")
 
         @JvmStatic
         fun fluid(id: String) = fluid(identifier(id))
@@ -420,6 +500,28 @@ object Tags {
     }
 }
 
+object DataComponents {
+    @JvmField
+    val ENCHANTMENTS =
+        register("enchantments") { builder -> builder.persistent(Enchantment.CODEC.listOf()).cacheEncoding() }
+
+    @JvmStatic
+    fun <T : Any> register(id: String, function: (DataComponentType.Builder<T>) -> DataComponentType.Builder<T>) =
+        register(identifier(id), function)
+
+    @JvmStatic
+    fun <T : Any> register(id: Identifier, function: (DataComponentType.Builder<T>) -> DataComponentType.Builder<T>) =
+        Registry.register<DataComponentType<*>, DataComponentType<T>>(
+            BuiltInRegistries.DATA_COMPONENT_TYPE,
+            id,
+            function(DataComponentType.builder()).build()
+        )
+
+    @JvmStatic
+    fun register() {
+    }
+}
+
 object CreativeTabs {
     @Suppress("unused")
     @JvmField
@@ -430,11 +532,12 @@ object CreativeTabs {
             .displayItems { _, output ->
                 output.accept { Items.LAPIS_CASING }
                 output.accept { Items.LAPIS_FUNNEL }
-                output.accept { Items.LAPIS_SHEET }
-                output.accept { Items.INTEGRATED_CIRCUIT }
                 output.accept { Items.EMPTY_EVOKER_MANSION }
                 output.accept { Items.EVOKER_MANSION }
                 output.accept { Items.SAFE_EVOKER_MANSION }
+                output.accept { Items.LAPIS_SHEET }
+                output.accept { Items.INTEGRATED_CIRCUIT }
+                output.accept { Items.EXPERIENCE_BUCKET }
                 output.accept { Items.WHITE_SEAT_OF_UNDYING }
                 output.accept { Items.ORANGE_SEAT_OF_UNDYING }
                 output.accept { Items.MAGENTA_SEAT_OF_UNDYING }
@@ -473,7 +576,7 @@ object CreativeTabs {
 
 object BlockEntityTypes {
     @JvmField
-    val EVOKER = register("evoker", ::EvokerMansionBlockEntity, Blocks.EVOKER_MANSION)
+    val EVOKER_MANSION = register("evoker_mansion", ::EvokerMansionBlockEntity, Blocks.EVOKER_MANSION)
 
     @JvmStatic
     fun <T : BlockEntity> register(
@@ -564,10 +667,34 @@ object RecipeSets {
     }
 }
 
+object FluidItemInventory {
+    @JvmStatic
+    fun register(type: Item, factory: Supplier<FluidItemInventoryWrapper>) {
+        AllFluidItemInventory.ALL[type] = AllFluidItemInventory.Entry(factory)
+    }
+
+    @JvmStatic
+    fun register() {
+        register(Items.EXPERIENCE_BUCKET, ::BucketFluidInventory)
+    }
+}
+
+object OpenPipeEffectHandlers {
+    @JvmStatic
+    fun register() {
+        OpenPipeEffectHandler.REGISTRY.register(Fluids.EXPERIENCE, ExperienceEffectHandler())
+    }
+}
+
 object FanProcessingTypes {
-    @Suppress("unused")
     @JvmField
-    val WOLOLO = register("wololo", WololoFanProcessingType())
+    val WOLOLO = register("wololo", WololoFanProcessingType(false))
+
+    @JvmField
+    val WOLOLO_NAUSEA = register("wololo_nausea", WololoFanProcessingType(true))
+
+    @JvmField
+    val ENCHANTING = register("enchanting", EnchantingFanProcessingType())
 
     @JvmStatic
     fun <T : FanProcessingType> register(id: String, type: T) = register(identifier(id), type)
@@ -602,6 +729,11 @@ object Shapes {
     fun cuboid(x1: Double, y1: Double, z1: Double, x2: Double, y2: Double, z2: Double): VoxelShape {
         return Block.box(x1, y1, z1, x2, y2, z2)
     }
+}
+
+object CasingTypes {
+    @JvmField
+    val LAPIS = BeltBlockEntity.CasingType.valueOf("LAPIS")
 }
 
 abstract class Handle {

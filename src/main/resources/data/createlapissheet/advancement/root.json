@@ -1,0 +1,28 @@
+{
+  "criteria": {
+    "0": {
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "createlapissheet:gui/advancements",
+    "description": {
+      "translate": "advancement.createlapissheet.root.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "createlapissheet:lapis_casing"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancement.createlapissheet.root"
+    }
+  },
+  "requirements": [
+    [
+      "0"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

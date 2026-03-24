@@ -1,0 +1,8 @@
+{
+  "type": "createlapissheet:wololo",
+  "nausea": true,
+  "ingredient": "minecraft:redstone",
+  "result": {
+    "id": "minecraft:lapis_lazuli"
+  }
+}

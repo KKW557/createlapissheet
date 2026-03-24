@@ -1,0 +1,12 @@
+﻿{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "#c:dyes/lime",
+    "#createlapissheet:seats_of_undying"
+  ],
+  "result": {
+    "count": 1,
+    "id": "createlapissheet:lime_seat_of_undying"
+  }
+}

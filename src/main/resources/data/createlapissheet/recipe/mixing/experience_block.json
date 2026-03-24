@@ -1,0 +1,10 @@
+{
+  "type": "create:mixing",
+  "ingredients": ["create:experience_block"],
+  "fluid_results": [
+    {
+      "amount": 43740,
+      "id": "createlapissheet:experience"
+    }
+  ]
+}

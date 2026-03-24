@@ -2,11 +2,7 @@
 
 package icu.suc.createlapissheet.client
 
-import com.zurrtum.create.client.AllBlockEntityRenders
-import com.zurrtum.create.client.AllBlockLayers
-import com.zurrtum.create.client.AllCasings
-import com.zurrtum.create.client.AllModels
-import com.zurrtum.create.client.Create
+import com.zurrtum.create.client.*
 import com.zurrtum.create.client.catnip.render.SpriteShiftEntry
 import com.zurrtum.create.client.catnip.render.SpriteShifter
 import com.zurrtum.create.client.content.decoration.encasing.EncasedCTBehaviour
@@ -16,15 +12,70 @@ import com.zurrtum.create.client.foundation.block.connected.AllCTTypes
 import com.zurrtum.create.client.foundation.block.connected.CTSpriteShiftEntry
 import com.zurrtum.create.client.foundation.block.connected.CTSpriteShifter
 import com.zurrtum.create.client.foundation.block.connected.CTType
+import com.zurrtum.create.client.infrastructure.fluid.FluidConfig
 import com.zurrtum.create.client.infrastructure.model.CTModel
+import com.zurrtum.create.infrastructure.fluids.FlowableFluid
 import icu.suc.createlapissheet.BlockEntityTypes
 import icu.suc.createlapissheet.Blocks
+import icu.suc.createlapissheet.Fluids
 import icu.suc.createlapissheet.client.content.processing.mansion.EvokerMansionRenderer
 import icu.suc.createlapissheet.client.content.processing.mansion.EvokerMansionVisual
 import icu.suc.createlapissheet.content.processing.mansion.EvokerMansionBlockEntity
 import icu.suc.createlapissheet.identifier
+import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer
+import net.minecraft.client.renderer.texture.TextureAtlas
+import net.minecraft.client.resources.model.Material
+import net.minecraft.core.component.DataComponentPatch
+import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.resources.Identifier
+import net.minecraft.util.Mth
+
+object FluidConfigs {
+    @JvmStatic
+    fun config(fluid: FlowableFluid) {
+        config(fluid, -1) { 96.0f }
+    }
+
+    @JvmStatic
+    fun config(fluid: FlowableFluid, color: Int, distance: () -> Float) {
+        config(fluid, color, distance) { _: DataComponentPatch -> -1 }
+    }
+
+    @JvmStatic
+    fun config(
+        fluid: FlowableFluid,
+        color: Int,
+        distance: () -> Float,
+        tint: (DataComponentPatch) -> Int
+    ) {
+        val id = BuiltInRegistries.FLUID.getKey(fluid).withPrefix("fluid/")
+        println(id)
+        val config = FluidConfig(
+            { Minecraft.getInstance().atlasManager.get(Material(TextureAtlas.LOCATION_BLOCKS, id.withSuffix("_still"))) },
+            { Minecraft.getInstance().atlasManager.get(Material(TextureAtlas.LOCATION_BLOCKS, id.withSuffix("_flow"))) },
+            tint,
+            distance,
+            color
+        )
+        AllFluidConfigs.ALL[fluid] = config
+        AllFluidConfigs.ALL[fluid.flowing] = config
+    }
+
+    @JvmStatic
+    fun register() {
+        config(Fluids.EXPERIENCE, -1, { 96.0f }) { _: DataComponentPatch ->
+            val level = Minecraft.getInstance().level ?: return@config 0xFFB8FF2A.toInt()
+            val o = level.gameTime / 8.0
+
+            val red = ((Mth.sin(o) + 1.0) * 0.5f * 255.0f).toInt().coerceIn(0, 255)
+            val green = 255
+            val blue = ((Mth.sin(o + 4.1887903) + 1.0f) * 0.1f * 255.0f).toInt().coerceIn(0, 255)
+
+            (128 shl 24) or (red shl 16) or (green shl 8) or blue
+        }
+    }
+}
 
 class Handle : icu.suc.createlapissheet.Handle() {
     override fun isClient() = true
@@ -47,7 +98,8 @@ object SpriteShifts {
     val LAPIS_CASING = ct(AllCTTypes.OMNIDIRECTIONAL, "lapis_casing")
 
     @JvmField
-    val LAPIS_CASING_BELT = get(Create.asResource("block/belt/brass_belt_casing"), identifier("block/belt/lapis_belt_casing"))
+    val LAPIS_CASING_BELT =
+        get(Create.asResource("block/belt/brass_belt_casing"), identifier("block/belt/lapis_belt_casing"))
 
     @JvmStatic
     fun get(original: Identifier, target: Identifier): SpriteShiftEntry = SpriteShifter.get(original, target)
@@ -77,7 +129,8 @@ object CTBehaviours {
     val LAPIS_CASING = EncasedCTBehaviour(SpriteShifts.LAPIS_CASING)
 
     @JvmStatic
-    fun register() {}
+    fun register() {
+    }
 }
 
 object Models {
@@ -108,7 +161,11 @@ object PartialModels {
 object BlockEntityRenders {
     @JvmStatic
     fun register() {
-        AllBlockEntityRenders.visual(BlockEntityTypes.EVOKER, { EvokerMansionRenderer() }, ::EvokerMansionVisual)
+        AllBlockEntityRenders.visual(
+            BlockEntityTypes.EVOKER_MANSION,
+            { EvokerMansionRenderer() },
+            ::EvokerMansionVisual
+        )
     }
 }
 

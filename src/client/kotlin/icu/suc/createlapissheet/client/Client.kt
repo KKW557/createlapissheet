@@ -4,6 +4,7 @@ import net.fabricmc.api.ClientModInitializer
 
 class Client : ClientModInitializer {
     override fun onInitializeClient() {
+        FluidConfigs.register()
         Handle.register()
         SpriteShifts.register()
         Casings.register()

@@ -1,0 +1,12 @@
+{
+  "sources": [
+    {
+      "type": "single",
+      "resource": "createlapissheet:fluid/experience_flow"
+    },
+    {
+      "type": "single",
+      "resource": "createlapissheet:fluid/experience_still"
+    }
+  ]
+}

@@ -5,6 +5,7 @@ import com.zurrtum.create.client.compat.rei.CreateCategory
 import com.zurrtum.create.client.compat.rei.renderer.TwoIconRenderer
 import com.zurrtum.create.client.foundation.gui.AllGuiTextures
 import com.zurrtum.create.client.foundation.gui.render.FanRenderState
+import com.zurrtum.create.content.processing.recipe.ProcessingOutput
 import icu.suc.createlapissheet.Blocks
 import icu.suc.createlapissheet.Items
 import icu.suc.createlapissheet.MOD_ID
@@ -20,8 +21,6 @@ import me.shedaniel.rei.api.common.entry.EntryIngredient
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.network.chat.Component
 import org.joml.Matrix3x2f
-import kotlin.collections.plusAssign
-import kotlin.math.min
 
 class FanWololoCategory : CreateCategory<FanWololoDisplay>() {
     override fun addWidgets(
@@ -34,45 +33,17 @@ class FanWololoCategory : CreateCategory<FanWololoDisplay>() {
         val chances = mutableListOf<Point>()
         val chanceIngredients = mutableListOf<EntryIngredient>()
 
-        val results = display.outputs
-        val outputSize = results.size
-        val xOffsetAmount = 1 - min(3, outputSize)
+        val input = Point(bounds.x + 26, bounds.y + 53)
 
-        val input: Point
-
-        if (outputSize == 1) {
-            input = Point(bounds.x + 26, bounds.y + 53)
-
-            addOutputData(
-                results.first(),
-                bounds.x + 146,
-                bounds.y + 53,
-                outputs,
-                outputIngredients,
-                chances,
-                chanceIngredients
-            )
-        } else {
-            input = Point(bounds.x + 26 + xOffsetAmount * 5, bounds.y + 53)
-
-            val left = bounds.x + 146 + xOffsetAmount * 9
-            val top = bounds.y + if (outputSize <= 9) 53 else 62
-
-            results.forEachIndexed { i, result ->
-                val xOffset = (i % 3) * 19
-                val yOffset = (i / 3) * -19
-
-                addOutputData(
-                    result,
-                    left + xOffset,
-                    top + yOffset,
-                    outputs,
-                    outputIngredients,
-                    chances,
-                    chanceIngredients
-                )
-            }
-        }
+        addOutputData(
+            ProcessingOutput(display.output),
+            bounds.x + 146,
+            bounds.y + 53,
+            outputs,
+            outputIngredients,
+            chances,
+            chanceIngredients
+        )
 
         widgets += Widgets.createDrawableWidget { graphics: GuiGraphics, _, _, _ ->
             drawSlotBackground(graphics, outputs, input)
@@ -80,7 +51,7 @@ class FanWololoCategory : CreateCategory<FanWololoDisplay>() {
 
             AllGuiTextures.JEI_SHADOW.render(graphics, bounds.x + 51, bounds.y + 32)
             AllGuiTextures.JEI_LIGHT.render(graphics, bounds.x + 70, bounds.y + 44)
-            AllGuiTextures.JEI_LONG_ARROW.render(graphics, bounds.x + 59 + 7 * xOffsetAmount, bounds.y + 56)
+            AllGuiTextures.JEI_LONG_ARROW.render(graphics, bounds.x + 59, bounds.y + 56)
 
             graphics.guiRenderState.submitPicturesInPictureState(
                 FanRenderState(
@@ -88,7 +59,7 @@ class FanWololoCategory : CreateCategory<FanWololoDisplay>() {
                     bounds.x + 61,
                     bounds.y + 9,
                     Blocks.EVOKER_MANSION.defaultBlockState()
-                        .setValue(EvokerMansionBlock.EVOKER, EvokerMansionBlock.Evoker.CASTING)
+                        .setValue(EvokerMansionBlock.EVOKER, EvokerMansionBlock.Evoker.WOLOLO)
                         .setValue(EvokerMansionBlock.NAUSEA, display.nausea)
                 )
             )

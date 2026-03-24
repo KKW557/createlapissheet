@@ -19,10 +19,12 @@
   "block.createlapissheet.red_seat_of_undying": "Red Seat of Undying",
   "block.createlapissheet.white_seat_of_undying": "White Seat of Undying",
   "block.createlapissheet.yellow_seat_of_undying": "Yellow Seat of Undying",
+  "block.createlapissheet.experience": "Experience",
   "item.createlapissheet.integrated_circuit": "Integrated Circuit",
   "item.createlapissheet.lapis_sheet": "Lapis Sheet",
   "item.createlapissheet.safe_evoker_mansion": "Safe Evoker Mansion",
   "item.createlapissheet.empty_evoker_mansion": "Empty Evoker Mansion",
+  "item.createlapissheet.experience_bucket": "Bucket o' Enchanting",
   "itemGroup.createlapissheet": "Create: Lapis Sheet",
   "createlapissheet.recipe.fan_wololo": "Bulk Wololo"
 }

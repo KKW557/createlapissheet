@@ -4,19 +4,38 @@ import com.zurrtum.create.content.logistics.funnel.FunnelBlockEntity;
 import com.zurrtum.create.foundation.blockEntity.SmartBlockEntity;
 import com.zurrtum.create.foundation.blockEntity.behaviour.filtering.ServerFilteringBehaviour;
 import icu.suc.createlapissheet.Blocks;
-import icu.suc.createlapissheet.foundation.blockentity.behaviour.filtering.EnchantmentFilteringBehaviour;
+import icu.suc.createlapissheet.foundation.blockentity.behaviour.filtering.EnchantmentFilter;
+import icu.suc.createlapissheet.foundation.blockentity.behaviour.filtering.EnchantmentFiltering;
+import icu.suc.createlapissheet.foundation.blockentity.behaviour.filtering.ServerEnchantmentFilteringBehaviour;
+import net.minecraft.core.Direction;
+import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(FunnelBlockEntity.class)
-public abstract class MixinFunnelBlockEntity {
+public abstract class MixinFunnelBlockEntity implements EnchantmentFiltering {
+    @Shadow
+    private ServerFilteringBehaviour filtering;
+
+    @SuppressWarnings("AddedMixinMembersNamePattern")
+    @Override
+    public @NonNull EnchantmentFilter getEnchantmentFilter(@NotNull Direction side) {
+        return getEnchantmentFilter();
+    }
+
+    @SuppressWarnings("AddedMixinMembersNamePattern")
+    @Override
+    public @NonNull EnchantmentFilter getEnchantmentFilter() {
+        return ((ServerEnchantmentFilteringBehaviour) filtering).toEnchantmentFilter();
+    }
 
     @Redirect(method = "addBehaviours", at = @At(value = "NEW", target = "com/zurrtum/create/foundation/blockEntity/behaviour/filtering/ServerFilteringBehaviour"))
     private @NonNull ServerFilteringBehaviour redirectFiltering(@NonNull SmartBlockEntity be) {
         if (be.getBlockState().is(Blocks.LAPIS_FUNNEL) || be.getBlockState().is(Blocks.LAPIS_BELT_FUNNEL)) {
-            return new EnchantmentFilteringBehaviour(be);
+            return new ServerEnchantmentFilteringBehaviour(be);
         }
         return new ServerFilteringBehaviour(be);
     }

@@ -57,7 +57,7 @@ class EvokerMansionRenderer :
                     this.horizontalAngle = AngleHelper.rad(be.headAngle.getValue(tickProgress).toDouble())
                 }
 
-                EvokerMansionBlock.Evoker.CASTING -> {
+                else -> {
                     val renderTick = time + (hashCode % 360)
                     this.headY = 0.1f
                     this.horizontalAngle =

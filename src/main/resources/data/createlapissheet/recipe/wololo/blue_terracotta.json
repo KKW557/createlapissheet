@@ -1,0 +1,8 @@
+{
+  "type": "createlapissheet:wololo",
+  "nausea": true,
+  "ingredient": "minecraft:red_terracotta",
+  "result": {
+    "id": "minecraft:blue_terracotta"
+  }
+}

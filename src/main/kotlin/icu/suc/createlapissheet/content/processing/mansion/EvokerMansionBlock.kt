@@ -1,13 +1,14 @@
 package icu.suc.createlapissheet.content.processing.mansion
 
+import com.zurrtum.create.content.kinetics.fan.processing.FanProcessingType
 import com.zurrtum.create.foundation.block.IBE
-import icu.suc.createlapissheet.BlockEntityTypes
-import icu.suc.createlapissheet.Items
-import icu.suc.createlapissheet.Shapes
-import icu.suc.createlapissheet.Tags
+import icu.suc.createlapissheet.*
+import icu.suc.createlapissheet.content.kinetics.fan.processing.EnchantingFanProcessingCatalyst
+import icu.suc.createlapissheet.content.kinetics.fan.processing.IFanProcessingBlock
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.core.component.DataComponents
+import net.minecraft.core.particles.ColorParticleOption
 import net.minecraft.core.particles.ParticleTypes
 import net.minecraft.core.registries.Registries
 import net.minecraft.sounds.SoundEvents
@@ -16,6 +17,7 @@ import net.minecraft.util.RandomSource
 import net.minecraft.util.StringRepresentable
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
+import net.minecraft.world.entity.monster.illager.SpellcasterIllager
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.entity.raid.Raid
 import net.minecraft.world.item.ItemStack
@@ -39,11 +41,11 @@ import net.minecraft.world.phys.shapes.CollisionContext
 import kotlin.math.max
 
 class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(properties),
-    IBE<EvokerMansionBlockEntity> {
+    IBE<EvokerMansionBlockEntity>, IFanProcessingBlock, EnchantingFanProcessingCatalyst {
 
     init {
         registerDefaultState(
-            defaultBlockState().setValue(EVOKER, Evoker.NONE).setValue(NAUSEA, false).setValue(ENCHANTING, false)
+            defaultBlockState().setValue(EVOKER, Evoker.NONE).setValue(NAUSEA, false)
         )
     }
 
@@ -68,7 +70,7 @@ class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(pr
     ) = when (state.getValue(EVOKER)) {
         Evoker.NONE -> ItemStack(Items.EMPTY_EVOKER_MANSION)
         Evoker.ANGRY -> ItemStack(Items.EVOKER_MANSION)
-        Evoker.CASTING -> ItemStack(Items.SAFE_EVOKER_MANSION)
+        else -> ItemStack(Items.SAFE_EVOKER_MANSION)
     }
 
     override fun useItemOn(
@@ -80,7 +82,7 @@ class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(pr
         hand: InteractionHand,
         result: BlockHitResult
     ): InteractionResult {
-        if (getEvokerOf(state) != Evoker.CASTING) return super.useItemOn(
+        if (getEvokerOf(state) == Evoker.NONE) return super.useItemOn(
             itemStack,
             state,
             level,
@@ -92,7 +94,7 @@ class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(pr
 
         var r: InteractionResult? = null
 
-        itemStack.get(DataComponents.CONSUMABLE)?.let { consumable ->
+        itemStack[DataComponents.CONSUMABLE]?.let { consumable ->
             var flagged = false
             var nausea = false
             for (effect in consumable.onConsumeEffects) {
@@ -121,7 +123,7 @@ class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(pr
                 r = InteractionResult.SUCCESS
                 return@let
             }
-            level.setBlock(pos, state.setValue(NAUSEA, nausea), UPDATE_ALL)
+            level.setBlockAndUpdate(pos, state.setValue(NAUSEA, nausea))
             itemStack.copy().apply {
                 itemStack.consume(1, player)
                 player.setItemInHand(hand, itemStack.applyAfterUseComponentSideEffects(player, this))
@@ -139,7 +141,7 @@ class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(pr
                     r = InteractionResult.SUCCESS
                     return@let
                 }
-                level.setBlock(pos, state.setValue(EVOKER, Evoker.CASTING), UPDATE_ALL)
+                level.setBlockAndUpdate(pos, state.setValue(EVOKER, Evoker.WOLOLO))
                 itemStack.consume(1, player)
                 r = InteractionResult.CONSUME
             }
@@ -164,7 +166,7 @@ class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(pr
 
     override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
         super.createBlockStateDefinition(builder)
-        builder.add(EVOKER, NAUSEA, ENCHANTING, FACING)
+        builder.add(EVOKER, NAUSEA, FACING)
     }
 
     override fun hasAnalogOutputSignal(blockState: BlockState) = true
@@ -180,26 +182,67 @@ class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(pr
 
     override fun getBlockEntityClass() = EvokerMansionBlockEntity::class.java
 
-    override fun getBlockEntityType() = BlockEntityTypes.EVOKER
+    override fun getBlockEntityType() = BlockEntityTypes.EVOKER_MANSION
 
     override fun animateTick(state: BlockState, level: Level, pos: BlockPos, source: RandomSource) {
         super.animateTick(state, level, pos, source)
 
-        if (!isEnchantingOf(state)) return
+        val evoker = getEvokerOf(state)
 
-        for (blockPos2 in EnchantingTableBlock.BOOKSHELF_OFFSETS) {
-            if (source.nextInt(16) == 0 && EnchantingTableBlock.isValidBookShelf(level, pos, blockPos2)) {
-                level.addParticle(
-                    ParticleTypes.ENCHANT,
-                    pos.x.toDouble() + 0.5,
-                    pos.y.toDouble() + 2.0,
-                    pos.z.toDouble() + 0.5,
-                    (blockPos2.x.toFloat() + source.nextFloat()).toDouble() - 0.5,
-                    (blockPos2.y.toFloat() - source.nextFloat() - 1.0f).toDouble(),
-                    (blockPos2.z.toFloat() + source.nextFloat()).toDouble() - 0.5
-                )
+        if (evoker == Evoker.ENCHANTING) {
+            for (blockPos2 in EnchantingTableBlock.BOOKSHELF_OFFSETS) {
+                if (source.nextInt(16) == 0 && EnchantingTableBlock.isValidBookShelf(level, pos, blockPos2)) {
+                    level.addParticle(
+                        ParticleTypes.ENCHANT,
+                        pos.x.toDouble() + 0.5,
+                        pos.y.toDouble() + 2.0,
+                        pos.z.toDouble() + 0.5,
+                        (blockPos2.x.toFloat() + source.nextFloat()).toDouble() - 0.5,
+                        (blockPos2.y.toFloat() - source.nextFloat() - 1.0f).toDouble(),
+                        (blockPos2.z.toFloat() + source.nextFloat()).toDouble() - 0.5
+                    )
+                }
             }
+        } else if (evoker == Evoker.WOLOLO) {
+            val color = SpellcasterIllager.IllagerSpell.WOLOLO.spellColor
+            level.addParticle(
+                ColorParticleOption.create(
+                    ParticleTypes.ENTITY_EFFECT,
+                    color[0].toFloat(),
+                    color[1].toFloat(),
+                    color[2].toFloat()
+                ),
+                pos.x + .5,
+                pos.y + .5,
+                pos.z + .5,
+                source.nextDouble() - .5,
+                source.nextDouble() - .5,
+                source.nextDouble() - .5
+            )
         }
+    }
+
+    override fun isValid(
+        type: FanProcessingType,
+        state: BlockState
+    ) = when (type) {
+        FanProcessingTypes.WOLOLO -> getEvokerOf(state) == Evoker.WOLOLO && !isNauseaOf(state)
+        FanProcessingTypes.WOLOLO_NAUSEA -> getEvokerOf(state) == Evoker.WOLOLO && isNauseaOf(state)
+        FanProcessingTypes.ENCHANTING -> getEvokerOf(state) == Evoker.ENCHANTING
+        else -> false
+    }
+
+    override fun tryEnchant(cost: Int, level: Level, pos: BlockPos): Boolean {
+        val b = (getBlockEntity(level, pos) ?: return false).tryEnchant(cost)
+        if (b) level.playSound(
+            null,
+            pos,
+            SoundEvents.ENCHANTMENT_TABLE_USE,
+            SoundSource.BLOCKS,
+            1.0f,
+            level.random.nextFloat() * 0.1f + 0.9f
+        )
+        return b
     }
 
     companion object {
@@ -212,11 +255,8 @@ class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(pr
         @JvmField
         val NAUSEA = BooleanProperty.create("nausea")
 
-        @JvmField
-        val ENCHANTING = BooleanProperty.create("enchanting")
-
         @JvmStatic
-        fun getLight(state: BlockState) = if (state.getValue(EVOKER) == Evoker.CASTING) 7 else 0
+        fun getLight(state: BlockState) = if (state.getValue(EVOKER) >= Evoker.WOLOLO) 7 else 0
 
         @JvmStatic
         fun getEvokerOf(state: BlockState) =
@@ -227,16 +267,10 @@ class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(pr
             if (state.hasProperty(NAUSEA)) state.getValue(NAUSEA) else false
 
         @JvmStatic
-        fun isEnchantingOf(state: BlockState) =
-            if (state.hasProperty(ENCHANTING)) state.getValue(ENCHANTING) else false
-
-        @JvmStatic
         fun isOminousBanner(itemStack: ItemStack, level: Level): Boolean {
             val ominousBanner = Raid.getOminousBannerInstance(level.holderLookup(Registries.BANNER_PATTERN))
             if (itemStack.item != ominousBanner.item) return false
-            if (itemStack.get(DataComponents.BANNER_PATTERNS)
-                    ?.let { it == ominousBanner.get(DataComponents.BANNER_PATTERNS) } != true
-            ) return false
+            if (itemStack[DataComponents.BANNER_PATTERNS]?.let { it == ominousBanner[DataComponents.BANNER_PATTERNS] } != true) return false
             return true
         }
 
@@ -248,7 +282,8 @@ class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(pr
     enum class Evoker(val id: String) : StringRepresentable {
         NONE("none"),
         ANGRY("angry"),
-        CASTING("casting");
+        WOLOLO("wololo"),
+        ENCHANTING("enchanting");
 
         companion object {
             @Suppress("unused")

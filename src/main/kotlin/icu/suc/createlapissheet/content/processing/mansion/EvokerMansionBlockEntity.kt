@@ -14,12 +14,11 @@ import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.Level
-import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.HorizontalDirectionalBlock
 import net.minecraft.world.level.block.state.BlockState
 
 class EvokerMansionBlockEntity(pos: BlockPos, state: BlockState) :
-    SmartBlockEntity(BlockEntityTypes.EVOKER, pos, state) {
+    SmartBlockEntity(BlockEntityTypes.EVOKER_MANSION, pos, state) {
 
     var headAnimation: LerpedFloat = LerpedFloat.linear()
     var headAngle: LerpedFloat = LerpedFloat.angular()
@@ -63,24 +62,31 @@ class EvokerMansionBlockEntity(pos: BlockPos, state: BlockState) :
     }
 
     fun updateCurrentLevel(level: Level) {
-        if (getEvokerFromBlock() != EvokerMansionBlock.Evoker.CASTING) return
+        val evoker = getEvokerFromBlock()
+        val enchanting = evoker == EvokerMansionBlock.Evoker.ENCHANTING
+        if (!enchanting && evoker != EvokerMansionBlock.Evoker.WOLOLO) return
 
-        val enchanting = isEnchantingFromBlock()
         val pos = blockPos
         val state = blockState
 
         if (isNauseaFromBlock()) {
             if (enchanting) {
-                level.setBlock(pos, state.setValue(EvokerMansionBlock.ENCHANTING, false), Block.UPDATE_CLIENTS)
+                level.setBlockAndUpdate(
+                    pos,
+                    state.setValue(EvokerMansionBlock.EVOKER, EvokerMansionBlock.Evoker.WOLOLO)
+                )
             }
             return
         }
 
         if (hasRequired()) {
             if (enchanting) return
-            level.setBlock(pos, state.setValue(EvokerMansionBlock.ENCHANTING, true), Block.UPDATE_CLIENTS)
+            level.setBlockAndUpdate(
+                pos,
+                state.setValue(EvokerMansionBlock.EVOKER, EvokerMansionBlock.Evoker.ENCHANTING)
+            )
         } else if (enchanting) {
-            level.setBlock(pos, state.setValue(EvokerMansionBlock.ENCHANTING, false), Block.UPDATE_CLIENTS)
+            level.setBlockAndUpdate(pos, state.setValue(EvokerMansionBlock.EVOKER, EvokerMansionBlock.Evoker.WOLOLO))
         }
     }
 
@@ -117,5 +123,53 @@ class EvokerMansionBlockEntity(pos: BlockPos, state: BlockState) :
 
     fun isNauseaFromBlock() = EvokerMansionBlock.isNauseaOf(blockState)
 
-    fun isEnchantingFromBlock() = EvokerMansionBlock.isEnchantingOf(blockState)
+    fun tryEnchant(cost: Int): Boolean {
+        if (cost <= 0) return true
+
+        observedInventory.findNewCapability()
+        if (!observedInventory.hasInventory()) return false
+        val inventory = observedInventory.inventory ?: return false
+
+        if (invVersionTracker.stillWaiting(inventory)) return false
+        invVersionTracker.awaitNewVersion(inventory)
+
+        var lapisNeeded = cost
+        var expNeeded = cost * 2
+
+        val lapisSlots = mutableListOf<Pair<Int, Int>>()
+        val expSlots = mutableListOf<Pair<Int, Int>>()
+
+        for (i in 0 until inventory.containerSize) {
+            val stack = inventory.getItem(i)
+            if (stack.isEmpty) continue
+
+            when (stack.item) {
+                Items.LAPIS_LAZULI -> if (lapisNeeded > 0) {
+                    val take = minOf(stack.count, lapisNeeded)
+                    lapisSlots.add(i to take)
+                    lapisNeeded -= take
+                }
+
+                AllItems.EXP_NUGGET -> if (expNeeded > 0) {
+                    val take = minOf(stack.count, expNeeded)
+                    expSlots.add(i to take)
+                    expNeeded -= take
+                }
+            }
+
+            if (lapisNeeded == 0 && expNeeded == 0) break
+        }
+
+        if (lapisNeeded > 0 || expNeeded > 0) return false
+
+        for ((slot, count) in lapisSlots) {
+            inventory.removeItem(slot, count)
+        }
+
+        for ((slot, count) in expSlots) {
+            inventory.removeItem(slot, count)
+        }
+
+        return true
+    }
 }

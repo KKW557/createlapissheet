@@ -64,7 +64,7 @@ class EvokerMansionBlockItem(block: Block, properties: Properties, val evoker: E
                         if (level.isClientSide || player == null) return@use InteractionResult.SUCCESS
 
                         giveItemTo(player, Items.EVOKER_MANSION.defaultInstance, context.itemInHand, context.hand)
-                        return@use InteractionResult.CONSUME
+                        return@use InteractionResult.SUCCESS
                     }
 
                     return@use super.useOn(context)
@@ -81,10 +81,10 @@ class EvokerMansionBlockItem(block: Block, properties: Properties, val evoker: E
 
                 level.destroyBlock(pos, false)
                 giveItemTo(player, Items.SAFE_EVOKER_MANSION.defaultInstance, context.itemInHand, context.hand)
-                InteractionResult.CONSUME
+                InteractionResult.SUCCESS
             }
 
-            EvokerMansionBlock.Evoker.CASTING -> super.useOn(context)
+            EvokerMansionBlock.Evoker.WOLOLO, EvokerMansionBlock.Evoker.ENCHANTING -> super.useOn(context)
         }
     }
 
@@ -121,7 +121,7 @@ class EvokerMansionBlockItem(block: Block, properties: Properties, val evoker: E
 
         @JvmStatic
         fun safe(properties: Properties) =
-            EvokerMansionBlockItem(Blocks.EVOKER_MANSION, properties, EvokerMansionBlock.Evoker.CASTING)
+            EvokerMansionBlockItem(Blocks.EVOKER_MANSION, properties, EvokerMansionBlock.Evoker.WOLOLO)
 
         @JvmStatic
         fun giveItemTo(player: Player, filled: ItemStack, held: ItemStack, hand: InteractionHand) {
