@@ -429,6 +429,9 @@ object Tags {
         @JvmField
         val FAN_PROCESSING_CATALYSTS_ENCHANTING = block("fan_processing_catalysts/enchanting")
 
+        @JvmField
+        val DISENCHANTERS = block("disenchanters")
+
         @JvmStatic
         fun block(id: String) = block(identifier(id))
 
