@@ -1,0 +1,27 @@
+{
+  "parent": "createlapissheet:lapis_casing",
+  "criteria": {
+    "0": {
+      "trigger": "createlapissheet:lapis_funnel_builtin"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancement.createlapissheet.lapis_funnel.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "createlapissheet:lapis_funnel"
+    },
+    "title": {
+      "translate": "advancement.createlapissheet.lapis_funnel"
+    }
+  },
+  "requirements": [
+    [
+      "0"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

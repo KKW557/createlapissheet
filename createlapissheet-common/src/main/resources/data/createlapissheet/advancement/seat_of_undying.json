@@ -1,0 +1,26 @@
+{
+  "parent": "createlapissheet:root",
+  "criteria": {
+    "0": {
+      "trigger": "createlapissheet:seat_of_undying_builtin"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.createlapissheet.seat_of_undying.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "createlapissheet:white_seat_of_undying"
+    },
+    "title": {
+      "translate": "advancement.createlapissheet.seat_of_undying"
+    }
+  },
+  "requirements": [
+    [
+      "0"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,22 @@
+{
+  "required": true,
+  "package": "icu.suc.createlapissheet.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "MixinAirCurrent",
+    "MixinBeltBlock",
+    "MixinBeltBlockEntity",
+    "MixinBeltBlockEntityCasingType",
+    "MixinBeltDeployerCallbacks",
+    "MixinBucketFluidInventory",
+    "MixinDeployerBlockEntity",
+    "MixinFunnelBlockEntity",
+    "MixinItemDrainBlockEntity",
+    "MixinLivingEntity",
+    "MixinManualApplicationHelper"
+  ],
+  "plugin": "icu.suc.createlapissheet.mixin.Plugin",
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

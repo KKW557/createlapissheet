@@ -8,3 +8,8 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
+include(
+    "createlapissheet-common",
+    "createlapissheet-fly-fabric"
+)

@@ -1,0 +1,28 @@
+{
+  "parent": "createlapissheet:safe_evoker_mansion",
+  "criteria": {
+    "0": {
+      "trigger": "createlapissheet:nausea_builtin"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.createlapissheet.nausea.desc"
+    },
+    "frame": "goal",
+    "hidden": true,
+    "icon": {
+      "count": 1,
+      "id": "minecraft:pufferfish"
+    },
+    "title": {
+      "translate": "advancement.createlapissheet.nausea"
+    }
+  },
+  "requirements": [
+    [
+      "0"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

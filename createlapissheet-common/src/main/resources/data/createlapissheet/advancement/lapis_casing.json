@@ -1,0 +1,26 @@
+{
+  "parent": "createlapissheet:lapis_sheet",
+  "criteria": {
+    "0": {
+      "trigger": "createlapissheet:lapis_casing_builtin"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.createlapissheet.lapis_casing.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "createlapissheet:lapis_casing"
+    },
+    "title": {
+      "translate": "advancement.createlapissheet.lapis_casing"
+    }
+  },
+  "requirements": [
+    [
+      "0"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

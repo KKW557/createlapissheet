@@ -1,0 +1,33 @@
+{
+  "parent": "createlapissheet:seat_of_undying",
+  "criteria": {
+    "0": {
+      "conditions": {
+        "items": [
+          {
+            "items": "createlapissheet:evoker_mansion"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.createlapissheet.evoker_mansion.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "createlapissheet:evoker_mansion"
+    },
+    "title": {
+      "translate": "advancement.createlapissheet.evoker_mansion"
+    }
+  },
+  "requirements": [
+    [
+      "0"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
