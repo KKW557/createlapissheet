@@ -45,5 +45,13 @@
   "item.createlapissheet.empty_evoker_mansion": "Empty Evoker Mansion",
   "item.createlapissheet.experience_bucket": "Bucket o' Enchanting",
   "itemGroup.createlapissheet": "Create: Lapis Sheet",
-  "createlapissheet.recipe.fan_wololo": "Bulk Wololo"
+  "createlapissheet.recipe.fan_wololo": "Bulk Wololo",
+  "tag.item.c.buckets.experience": "Experience Buckets",
+  "tag.item.c.plates.lapis": "Lapis Plates",
+  "tag.block.createlapissheet.fan_processing_catalysts.enchanting": "Enchanting Catalysts",
+  "tag.block.createlapissheet.fan_processing_catalysts.wololo": "Wololo Catalysts",
+  "tag.block.createlapissheet.disenchanters": "Disenchanters",
+  "tag.block.createlapissheet.fan_transparent_requires_unpowered": "Fan Transparent Requires Unpowered",
+  "tag.block.createlapissheet.seats_of_undying": "Seats Of Undying",
+  "tag.item.createlapissheet.seats_of_undying": "Seats Of Undying"
 }
