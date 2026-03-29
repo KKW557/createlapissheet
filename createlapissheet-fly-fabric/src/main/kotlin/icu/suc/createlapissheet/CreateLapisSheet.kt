@@ -541,7 +541,6 @@ object DataComponents {
 }
 
 object CreativeTabs {
-    @Suppress("unused")
     @JvmField
     val MAIN = register(
         "main", FabricItemGroup.builder()
