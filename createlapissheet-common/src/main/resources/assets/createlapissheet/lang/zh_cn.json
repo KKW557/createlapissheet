@@ -46,12 +46,12 @@
   "item.createlapissheet.experience_bucket": "附魔之桶",
   "itemGroup.createlapissheet": "机械动力：青金石板",
   "createlapissheet.recipe.fan_wololo": "批量呜噜噜",
-  "tag.item.c.buckets.experience": "Experience Buckets",
-  "tag.item.c.plates.lapis": "Lapis Plates",
-  "tag.block.createlapissheet.fan_processing_catalysts.enchanting": "Enchanting Catalysts",
-  "tag.block.createlapissheet.fan_processing_catalysts.wololo": "Wololo Catalysts",
-  "tag.block.createlapissheet.disenchanters": "Disenchanters",
-  "tag.block.createlapissheet.fan_transparent_requires_unpowered": "Fan Transparent Requires Unpowered",
-  "tag.block.createlapissheet.seats_of_undying": "Seats Of Undying",
-  "tag.item.createlapissheet.seats_of_undying": "Seats Of Undying"
+  "tag.item.c.buckets.experience": "经验桶",
+  "tag.item.c.plates.lapis": "青金石板",
+  "tag.block.createlapissheet.fan_processing_catalysts.enchanting": "附魔触媒",
+  "tag.block.createlapissheet.fan_processing_catalysts.wololo": "呜噜噜触媒",
+  "tag.block.createlapissheet.disenchanters": "祛魔器",
+  "tag.block.createlapissheet.fan_transparent_requires_unpowered": "透风需要未充能",
+  "tag.block.createlapissheet.seats_of_undying": "不死坐垫",
+  "tag.item.createlapissheet.seats_of_undying": "不死坐垫"
 }
