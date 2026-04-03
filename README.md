@@ -1,8 +1,10 @@
 # Create: Lapis Sheet
 
+[![GitHub License](https://img.shields.io/github/license/KKW557/createlapissheet)](https://github.com/KKW557/createlapissheet?tab=MIT-1-ov-file#readme)
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/KKW557/createlapissheet/gradle.yml)](https://github.com/KKW557/createlapissheet/actions/workflows/gradle.yml)
-[![Crowdin](https://badges.crowdin.net/createlapissheet/localized.svg)](https://crowdin.com/project/createlapissheet)
 [![GitHub Release](https://img.shields.io/github/v/release/KKW557/createlapissheet)](https://github.com/KKW557/createlapissheet/releases/latest)
+
+[![Crowdin](https://badges.crowdin.net/createlapissheet/localized.svg)](https://crowdin.com/project/createlapissheet)
 [![Modrinth Downloads](https://img.shields.io/modrinth/dt/createlapissheet)](https://modrinth.com/mod/createlapissheet)
 
 An addition mod of [Create-Fly](https://github.com/ZurrTum/Create-Fly).
@@ -13,4 +15,4 @@ Because the official [Create Fabric](https://github.com/Fabricators-of-Create/Cr
 
 ## License
 
-[MIT](LICENSE)
+This project is licensed under the [MIT License](LICENSE) © 2025 557.
