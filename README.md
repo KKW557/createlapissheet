@@ -1,7 +1,7 @@
 # Create: Lapis Sheet
 
 [![GitHub License](https://img.shields.io/github/license/KKW557/createlapissheet)](https://github.com/KKW557/createlapissheet?tab=MIT-1-ov-file#readme)
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/KKW557/createlapissheet/gradle.yml)](https://github.com/KKW557/createlapissheet/actions/workflows/gradle.yml)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/KKW557/createlapissheet/build.yml)](https://github.com/KKW557/createlapissheet/actions/workflows/build.yml)
 [![GitHub Release](https://img.shields.io/github/v/release/KKW557/createlapissheet)](https://github.com/KKW557/createlapissheet/releases/latest)
 
 [![Crowdin](https://badges.crowdin.net/createlapissheet/localized.svg)](https://crowdin.com/project/createlapissheet)
