@@ -18,6 +18,7 @@ import com.zurrtum.create.infrastructure.fluids.FlowableFluid
 import com.zurrtum.create.infrastructure.fluids.FlowableFluid.Still
 import com.zurrtum.create.infrastructure.fluids.FluidEntry
 import com.zurrtum.create.infrastructure.fluids.FluidItemInventoryWrapper
+import icu.suc.createlapissheet.content.fluids.pipes.ExperienceAttractor
 import icu.suc.createlapissheet.content.kinetics.fan.processing.EnchantingFanProcessingType
 import icu.suc.createlapissheet.content.kinetics.fan.processing.WololoFanProcessingType
 import icu.suc.createlapissheet.content.kinetics.fan.processing.WololoRecipe
@@ -83,6 +84,14 @@ object GameRules {
 }
 
 object Blocks {
+    @Suppress("DEPRECATION")
+    @JvmField
+    val EXPERIENCE_ATTRACTOR = register(
+        "experience_attractor",
+        ::ExperienceAttractor,
+        BlockBehaviour.Properties.ofFullCopy(MinecraftBlocks.LAPIS_BLOCK).forceSolidOff()
+    )
+
     @JvmField
     val LAPIS_CASING = register(
         "lapis_casing",
@@ -281,6 +290,9 @@ object Fluids {
 }
 
 object Items {
+    @JvmField
+    val EXPERIENCE_ATTRACTOR = register(Blocks.EXPERIENCE_ATTRACTOR)
+
     @JvmField
     val LAPIS_CASING = register(Blocks.LAPIS_CASING)
 
@@ -547,6 +559,7 @@ object CreativeTabs {
             .icon { ItemStack(Items.LAPIS_SHEET) }
             .title(Component.translatable("itemGroup.$MOD_ID"))
             .displayItems { _, output ->
+                output.accept { Items.EXPERIENCE_ATTRACTOR }
                 output.accept { Items.LAPIS_CASING }
                 output.accept { Items.LAPIS_FUNNEL }
                 output.accept { Items.EMPTY_EVOKER_MANSION }
