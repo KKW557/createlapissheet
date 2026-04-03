@@ -15,4 +15,4 @@ Because the official [Create Fabric](https://github.com/Fabricators-of-Create/Cr
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE) © 2025 557.
+This project is licensed under the [MIT License](LICENSE) © 2026 557.
