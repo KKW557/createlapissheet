@@ -7,7 +7,7 @@ import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.entity.ExperienceOrb
 import net.minecraft.world.level.Level
 import net.minecraft.world.phys.AABB
-import java.util.WeakHashMap
+import java.util.*
 
 class ExperienceEffectHandler : OpenPipeEffectHandler {
     private val cache = WeakHashMap<AABB, Int>()
