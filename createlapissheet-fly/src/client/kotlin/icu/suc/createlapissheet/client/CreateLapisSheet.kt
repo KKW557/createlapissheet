@@ -42,6 +42,7 @@ object FluidConfigs {
         config(fluid, color, distance) { _: DataComponentPatch -> -1 }
     }
 
+    @Suppress("DEPRECATION")
     @JvmStatic
     fun config(
         fluid: FlowableFluid,
