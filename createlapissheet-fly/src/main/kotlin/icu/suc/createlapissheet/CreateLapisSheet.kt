@@ -69,8 +69,8 @@ object GameRules {
         register("experience_fluid_to_orb", GameRuleBuilder.forBoolean(true).category(GameRuleCategory.SPAWNING))
 
     @JvmField
-    val MIN_AWARD_XP =
-        register("min_award_xp", GameRuleBuilder.forInteger(1).category(GameRuleCategory.SPAWNING).range(1, 32767))
+    val MIN_LEAKING_XP =
+        register("min_leaking_xp", GameRuleBuilder.forInteger(1).category(GameRuleCategory.SPAWNING).range(1, 32767))
 
     @JvmStatic
     fun <T : Any> register(id: String, builder: GameRuleBuilder<T>) = register(identifier(id), builder)

@@ -11,5 +11,5 @@ pluginManagement {
 
 include(
     "createlapissheet-common",
-    "createlapissheet-fly-fabric"
+    "createlapissheet-fly"
 )

@@ -45,9 +45,7 @@ class EvokerMansionBlock(properties: Properties) : HorizontalDirectionalBlock(pr
     IBE<EvokerMansionBlockEntity>, IFanProcessingBlock, EnchantingFanProcessingCatalyst {
 
     init {
-        registerDefaultState(
-            defaultBlockState().setValue(EVOKER, Evoker.NONE).setValue(NAUSEA, false)
-        )
+        registerDefaultState(defaultBlockState().setValue(EVOKER, Evoker.NONE).setValue(NAUSEA, false))
     }
 
     override fun codec() = CODEC

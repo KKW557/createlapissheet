@@ -27,7 +27,7 @@ class ExperienceEffectHandler : OpenPipeEffectHandler {
 
         val xp = amount / 1620
 
-        if (xp >= level.gameRules.get(GameRules.MIN_AWARD_XP)) {
+        if (xp >= level.gameRules.get(GameRules.MIN_LEAKING_XP)) {
             ExperienceOrb.award(level, area.center, xp)
             cache[area] = amount % 1620
         } else {
