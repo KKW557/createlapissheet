@@ -637,6 +637,9 @@ object Advancements {
     val SEAT_OF_UNDYING = register("seat_of_undying")
 
     @JvmField
+    val STAY_CALM = register("stay_calm")
+
+    @JvmField
     val LAPIS_FUNNEL = register("lapis_funnel")
 
     @JvmField

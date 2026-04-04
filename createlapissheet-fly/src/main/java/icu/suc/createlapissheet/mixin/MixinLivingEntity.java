@@ -1,8 +1,10 @@
 package icu.suc.createlapissheet.mixin;
 
 import com.zurrtum.create.content.contraptions.actors.seat.SeatEntity;
+import icu.suc.createlapissheet.Advancements;
 import icu.suc.createlapissheet.Tags;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,6 +38,10 @@ public abstract class MixinLivingEntity {
         var deathProtection = itemStack.get(DataComponents.DEATH_PROTECTION);
 
         if (deathProtection == null) return;
+
+        if (entity instanceof ServerPlayer player) {
+            Advancements.STAY_CALM.trigger(player);
+        }
 
         entity.setHealth(1.0F);
         deathProtection.applyEffects(itemStack, entity);

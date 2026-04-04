@@ -1,0 +1,27 @@
+{
+  "parent": "createlapissheet:seat_of_undying",
+  "criteria": {
+    "0": {
+      "trigger": "createlapissheet:stay_calm_builtin"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.createlapissheet.stay_calm.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "createlapissheet:red_seat_of_undying"
+    },
+    "title": {
+      "translate": "advancement.createlapissheet.stay_calm"
+    }
+  },
+  "requirements": [
+    [
+      "0"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
