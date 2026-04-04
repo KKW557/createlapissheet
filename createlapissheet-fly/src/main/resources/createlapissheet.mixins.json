@@ -14,7 +14,8 @@
     "MixinFunnelBlockEntity",
     "MixinItemDrainBlockEntity",
     "MixinLivingEntity",
-    "MixinManualApplicationHelper"
+    "MixinManualApplicationHelper",
+    "MixinVanillaFluidTargets"
   ],
   "plugin": "icu.suc.createlapissheet.mixin.Plugin",
   "injectors": {
