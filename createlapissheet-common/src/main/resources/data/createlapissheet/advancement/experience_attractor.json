@@ -1,0 +1,30 @@
+{
+  "parent": "createlapissheet:lapis_casing",
+  "criteria": {
+    "0": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "block": "createlapissheet:experience_attractor"
+      }
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancement.createlapissheet.experience_attractor.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "createlapissheet:experience_attractor"
+    },
+    "title": {
+      "translate": "advancement.createlapissheet.experience_attractor"
+    }
+  },
+  "requirements": [
+    [
+      "0"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

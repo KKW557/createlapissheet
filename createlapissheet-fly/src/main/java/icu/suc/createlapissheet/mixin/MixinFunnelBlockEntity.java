@@ -3,17 +3,21 @@ package icu.suc.createlapissheet.mixin;
 import com.zurrtum.create.content.logistics.funnel.FunnelBlockEntity;
 import com.zurrtum.create.foundation.blockEntity.SmartBlockEntity;
 import com.zurrtum.create.foundation.blockEntity.behaviour.filtering.ServerFilteringBehaviour;
+import icu.suc.createlapissheet.Advancements;
 import icu.suc.createlapissheet.Blocks;
 import icu.suc.createlapissheet.foundation.blockentity.behaviour.filtering.EnchantmentFilter;
 import icu.suc.createlapissheet.foundation.blockentity.behaviour.filtering.EnchantmentFiltering;
 import icu.suc.createlapissheet.foundation.blockentity.behaviour.filtering.ServerEnchantmentFilteringBehaviour;
 import net.minecraft.core.Direction;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
+
+import java.util.List;
 
 @Mixin(FunnelBlockEntity.class)
 public abstract class MixinFunnelBlockEntity implements EnchantmentFiltering {
@@ -38,5 +42,10 @@ public abstract class MixinFunnelBlockEntity implements EnchantmentFiltering {
             return new ServerEnchantmentFilteringBehaviour(be);
         }
         return new ServerFilteringBehaviour(be);
+    }
+
+    @Redirect(method = "getAwardables", at = @At(value = "INVOKE", target = "Ljava/util/List;of(Ljava/lang/Object;)Ljava/util/List;"))
+    private @NonNull @Unmodifiable List<Object> redirectGetAwardables(Object e1) {
+        return List.of(e1, Advancements.LAPIS_FUNNEL);
     }
 }

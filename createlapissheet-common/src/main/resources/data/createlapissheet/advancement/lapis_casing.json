@@ -6,6 +6,7 @@
     }
   },
   "display": {
+    "announce_to_chat": false,
     "description": {
       "translate": "advancement.createlapissheet.lapis_casing.desc"
     },
