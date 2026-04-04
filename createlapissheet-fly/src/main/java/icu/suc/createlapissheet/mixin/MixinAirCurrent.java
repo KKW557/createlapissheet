@@ -2,11 +2,16 @@ package icu.suc.createlapissheet.mixin;
 
 import com.google.common.collect.Maps;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.zurrtum.create.AllAdvancements;
 import com.zurrtum.create.AllSynchedDatas;
+import com.zurrtum.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
+import com.zurrtum.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.zurrtum.create.content.kinetics.fan.AirCurrent;
+import com.zurrtum.create.content.kinetics.fan.EncasedFanBlockEntity;
 import com.zurrtum.create.content.kinetics.fan.IAirCurrentSource;
 import com.zurrtum.create.content.kinetics.fan.processing.FanProcessing;
 import com.zurrtum.create.content.kinetics.fan.processing.FanProcessingType;
+import com.zurrtum.create.infrastructure.config.AllConfigs;
 import icu.suc.createlapissheet.FanProcessingTypes;
 import icu.suc.createlapissheet.Tags;
 import icu.suc.createlapissheet.content.kinetics.fan.EnchantmentFilterSegment;
@@ -19,10 +24,13 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EnchantingTableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
@@ -37,8 +45,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 @Mixin(AirCurrent.class)
 public abstract class MixinAirCurrent implements EnchantmentFilterSegmentHolder {
@@ -156,7 +166,6 @@ public abstract class MixinAirCurrent implements EnchantmentFilterSegmentHolder 
             if (segment == null) return false;
             var level = entity.level();
             var lookup = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
-            var item = entity.getItem();
             var filter = segment.getFilter();
 
             var source = segment.getSource();
@@ -170,6 +179,7 @@ public abstract class MixinAirCurrent implements EnchantmentFilterSegmentHolder 
             boolean flag = i == 1;
             if (!flag) i = i / 16;
 
+            var item = entity.getItem();
             Map<Holder<Enchantment>, Integer> enchantments = Maps.newHashMap();
             float p = i;
             List<@NotNull Enchantment> invoke = filter.invoke(
@@ -196,5 +206,90 @@ public abstract class MixinAirCurrent implements EnchantmentFilterSegmentHolder 
             }
         }
         return b;
+    }
+
+    @Redirect(method = "tickAffectedHandlers", at = @At(value = "INVOKE", target = "Lcom/zurrtum/create/content/kinetics/belt/behaviour/TransportedItemStackHandlerBehaviour;handleProcessingOnAllItems(Ljava/util/function/Function;)V"))
+    private void redirectHandleProcessingOnAllItems(@NonNull TransportedItemStackHandlerBehaviour handler, Function<TransportedItemStack, TransportedItemStackHandlerBehaviour.TransportedResult> processFunction, @Local(name = "world") Level world, @Local(name = "processingType") FanProcessingType processingType) {
+        if (processingType != FanProcessingTypes.ENCHANTING) {
+            handler.handleProcessingOnAllItems(processFunction);
+            return;
+        }
+        handler.handleProcessingOnAllItems(transported -> {
+            if (world.isClientSide()) {
+                processingType.spawnProcessingParticles(world, handler.getWorldPositionOf(transported));
+                return TransportedItemStackHandlerBehaviour.TransportedResult.doNothing();
+            }
+            var applyProcessing = FanProcessing.applyProcessing(transported, world, processingType);
+            if (!applyProcessing.doesNothing()) {
+                enchanting: {
+                    int manhattan = handler.getPos().distManhattan(source.getAirCurrentPos());
+                    var segment = getSegmentAt(manhattan);
+                    if (segment == null) break enchanting;
+                    var lookup = world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+                    var filter = segment.getFilter();
+
+                    var source = segment.getSource();
+                    if (source == null) break enchanting;
+
+                    float i = 1;
+                    for (var pos : EnchantingTableBlock.BOOKSHELF_OFFSETS) {
+                        if (i == 16) break;
+                        if (EnchantingTableBlock.isValidBookShelf(world, source, pos)) ++i;
+                    }
+                    boolean flag = i == 1;
+                    if (!flag) i = i / 16;
+
+                    var item = transported.stack.copy();
+
+                    Map<Holder<Enchantment>, Integer> enchantments = Maps.newHashMap();
+                    float p = i;
+                    List<@NotNull Enchantment> invoke = filter.invoke(
+                            lookup.stream()
+                                    .filter(enchantment -> enchantment.canEnchant(item))
+                                    .toList()
+                    );
+                    int cost = invoke.stream().mapToInt(enchantment -> {
+                        int maxLevel = enchantment.getMaxLevel();
+                        int l = flag ? (maxLevel == 1 ? 0 : 1) : (int) (maxLevel * p);
+                        if (l <= 0) return 0;
+                        enchantments.put(lookup.wrapAsHolder(enchantment), l);
+                        return enchantment.getAnvilCost() * l;
+                    }).sum();
+
+                    if (enchantments.isEmpty()) break enchanting;
+
+                    if (EnchantingFanProcessingCatalyst.enchant(cost, world, source)) {
+                        enchantments.forEach(item::enchant);
+
+                        if (this.source instanceof EncasedFanBlockEntity fan) {
+                            fan.award(AllAdvancements.FAN_PROCESSING);
+                        }
+
+                        List<TransportedItemStack> transportedStacks = new ArrayList<>();
+                        var newTransported = transported.getSimilar();
+                        newTransported.stack = item;
+                        transportedStacks.add(newTransported);
+                        return TransportedItemStackHandlerBehaviour.TransportedResult.convertTo(transportedStacks);
+                    } else {
+                        transported.processingTime = (AllConfigs.server().kinetics.fanProcessingTime.get() * (((transported.stack.getCount() - 1) / 16) + 1)) + 1;
+                        return TransportedItemStackHandlerBehaviour.TransportedResult.doNothing();
+                    }
+                }
+            }
+            return applyProcessing;
+        });
+    }
+
+    @Unique
+    private static int getDistance(@NonNull BlockPos pos1, @NonNull BlockPos pos2) {
+        int distance;
+        if (pos1.getX() != pos2.getX()) {
+            distance = Math.abs(pos1.getX() - pos2.getX());
+        } else if (pos1.getY() != pos2.getY()) {
+            distance = Math.abs(pos1.getY() - pos2.getY());
+        } else {
+            distance = Math.abs(pos1.getZ() - pos2.getZ());
+        }
+        return distance;
     }
 }
