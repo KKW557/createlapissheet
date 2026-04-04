@@ -33,7 +33,10 @@ public abstract class MixinFunnelBlockEntity implements EnchantmentFiltering {
     @SuppressWarnings("AddedMixinMembersNamePattern")
     @Override
     public @NonNull EnchantmentFilter getEnchantmentFilter() {
-        return ((ServerEnchantmentFilteringBehaviour) filtering).toEnchantmentFilter();
+        if (filtering instanceof ServerEnchantmentFilteringBehaviour serverEnchantmentFilteringBehaviour) {
+            return serverEnchantmentFilteringBehaviour.toEnchantmentFilter();
+        }
+        return EnchantmentFilter.EMPTY;
     }
 
     @Redirect(method = "addBehaviours", at = @At(value = "NEW", target = "com/zurrtum/create/foundation/blockEntity/behaviour/filtering/ServerFilteringBehaviour"))
