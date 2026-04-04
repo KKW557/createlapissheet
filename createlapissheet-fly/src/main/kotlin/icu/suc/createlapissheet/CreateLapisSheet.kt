@@ -72,6 +72,12 @@ object GameRules {
     val MIN_LEAKING_XP =
         register("min_leaking_xp", GameRuleBuilder.forInteger(1).category(GameRuleCategory.SPAWNING).range(1, 32767))
 
+    @JvmField
+    val NATURAL_DEATH_XP_PERCENTAGE = register(
+        "natural_death_xp_percentage",
+        GameRuleBuilder.forInteger(50).category(GameRuleCategory.DROPS).range(0, 100)
+    )
+
     @JvmStatic
     fun <T : Any> register(id: String, builder: GameRuleBuilder<T>) = register(identifier(id), builder)
 
@@ -655,10 +661,12 @@ object Advancements {
     fun register(id: String) = register(identifier(id))
 
     @JvmStatic
-    fun register(id: Identifier) = Registry.register(BuiltInRegistries.TRIGGER_TYPES, id.withSuffix("_builtin"), CreateTrigger(id))
+    fun register(id: Identifier) =
+        Registry.register(BuiltInRegistries.TRIGGER_TYPES, id.withSuffix("_builtin"), CreateTrigger(id))
 
     @JvmStatic
-    fun register() {}
+    fun register() {
+    }
 }
 
 object RecipeTypes {
