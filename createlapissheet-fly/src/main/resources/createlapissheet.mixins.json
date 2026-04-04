@@ -10,6 +10,7 @@
     "MixinBeltDeployerCallbacks",
     "MixinBucketFluidInventory",
     "MixinDeployerBlockEntity",
+    "MixinExperienceOrb",
     "MixinFunnelBlockEntity",
     "MixinItemDrainBlockEntity",
     "MixinLivingEntity",

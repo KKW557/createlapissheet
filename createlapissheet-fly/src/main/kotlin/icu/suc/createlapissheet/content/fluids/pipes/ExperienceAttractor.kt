@@ -2,6 +2,7 @@ package icu.suc.createlapissheet.content.fluids.pipes
 
 import net.minecraft.core.BlockPos
 import net.minecraft.server.level.ServerLevel
+import net.minecraft.util.RandomSource
 import net.minecraft.world.entity.ExperienceOrb
 import net.minecraft.world.level.LevelAccessor
 import net.minecraft.world.level.block.Block
@@ -29,6 +30,7 @@ class ExperienceAttractor(properties: Properties) : Block(properties) {
     }
 
     companion object {
+        @JvmField
         val EXPERIENCE = IntegerProperty.create("experience", 0, 50)
     }
 }
