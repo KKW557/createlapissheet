@@ -4,7 +4,12 @@
     "0": {
       "trigger": "minecraft:placed_block",
       "conditions": {
-        "block": "createlapissheet:experience_attractor"
+        "location": [
+          {
+            "condition": "block_state_property",
+            "block": "createlapissheet:experience_attractor"
+          }
+        ]
       }
     }
   },
