@@ -1,8 +1,6 @@
 package icu.suc.createlapissheet.mixin;
 
-import com.zurrtum.create.AllFluids;
 import com.zurrtum.create.content.fluids.pipes.VanillaFluidTargets;
-import com.zurrtum.create.infrastructure.fluids.BottleFluidInventory;
 import com.zurrtum.create.infrastructure.fluids.FluidStack;
 import icu.suc.createlapissheet.Fluids;
 import icu.suc.createlapissheet.content.fluids.pipes.ExperienceAttractor;
