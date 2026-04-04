@@ -10,6 +10,7 @@
       "translate": "advancement.createlapissheet.stay_calm.desc"
     },
     "frame": "challenge",
+    "hidden": true,
     "icon": {
       "count": 1,
       "id": "createlapissheet:red_seat_of_undying"
