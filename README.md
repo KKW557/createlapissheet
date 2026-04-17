@@ -13,6 +13,15 @@ Unless someone is willing to help, otherwise this mod only has a **Fabric** vers
 
 Because the official [Create Fabric](https://github.com/Fabricators-of-Create/Create) update is slow, it will not be adapted for the time being.
 
+## Overview
+
+This mod reintroduces the removed `lapis_sheet`
+
+and expands gameplay around lapis by adding new blocks and mechanics.
+
+It also introduces a new gamerule `natural_death_xp_percentage`,
+which allows you to control the percentage of experience dropped when entities die naturally.
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE) © 2026 557.
