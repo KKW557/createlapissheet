@@ -5,7 +5,7 @@
 [![GitHub Release](https://img.shields.io/github/v/release/KKW557/createlapissheet?include_prereleases)](https://github.com/KKW557/createlapissheet/releases/latest)
 
 [![Crowdin](https://badges.crowdin.net/createlapissheet/localized.svg)](https://crowdin.com/project/createlapissheet)
-[![Modrinth Downloads](https://img.shields.io/modrinth/dt/createlapissheet?logo=modrinth)](https://modrinth.com/mod/createlapissheet)
+[![Modrinth Downloads](https://img.shields.io/modrinth/dt/createlapissheet?logo=modrinth)](https://modrinth.com/project/1kLpKkvh)
 
 An addition mod of [Create-Fly](https://github.com/ZurrTum/Create-Fly).
 
